@@ -1,0 +1,12 @@
+1733807852967	Move 'menu.jsp' to 'views'
+1733808318729	Move 'calendarList.jsp' to 'calendar'
+1733808321130	Move 'calendarupdate.jsp' to 'calendar'
+1733808326330	Move 'schedule.jsp' to 'calendar'
+1733808462463	Move 'addmember.jsp' to 'member'
+1733808470508	Move 'checkinfo.jsp' to 'member'
+1733808474453	Move 'login.jsp' to 'member'
+1733808477418	Move 'loginsuccess.jsp' to 'member'
+1733808480628	Move 'memberSuccess.jsp' to 'member'
+1733808484226	Move 'myinfo.jsp' to 'member'
+1733808486267	Move 'updatemember.jsp' to 'member'
+1733808613194	Delete element
