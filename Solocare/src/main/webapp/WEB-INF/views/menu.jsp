@@ -59,11 +59,17 @@
             padding: 5px 10px;
         }
         .user-links {
+        	display : flex;
             margin-left: 20px; /* 로그인/회원가입 간격 */
         }
         .main-content {
             margin-top: 80px; /* 내비게이션 바 높이에 맞춰 여백 추가 */
         }
+        .navbar-collapse {
+		    display: flex;
+		    justify-content: space-between; /* 양쪽 끝으로 배치 */
+		    width: 100%; /* 전체 너비 사용 */
+		}
     </style>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="font-family: 'Montserrat', sans-serif;">
