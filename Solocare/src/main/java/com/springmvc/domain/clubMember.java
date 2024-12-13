@@ -1,46 +1,77 @@
 package com.springmvc.domain;
 
-import java.util.Date;
 
 public class clubMember 
 {
 	private String memberId;
 	private int clubNum;
-	private Date joinDate;
+	private String clubName;
+	private String joinDate;
+	private String memberphone;
+	private String memberemail;
 	
 
 	public clubMember() {}
-	
-	public clubMember(String memberId, int clubNum, Date joinDate) {
-		this.memberId = memberId;
-		this.clubNum = clubNum;
-		this.joinDate = joinDate;
-	}
+
 
 	public String getMemberId() {
 		return memberId;
 	}
 
+
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
+
 
 	public int getClubNum() {
 		return clubNum;
 	}
 
+
 	public void setClubNum(int clubNum) {
 		this.clubNum = clubNum;
 	}
 
-	public Date getJoinDate() {
+
+	public String getClubName() {
+		return clubName;
+	}
+
+
+	public void setClubName(String clubName) {
+		this.clubName = clubName;
+	}
+
+
+	public String getJoinDate() {
 		return joinDate;
 	}
 
-	public void setJoinDate(Date joinDate) {
+
+	public void setJoinDate(String joinDate) {
 		this.joinDate = joinDate;
 	}
+
+
+	public String getMemberphone() {
+		return memberphone;
+	}
+
+
+	public void setMemberphone(String memberphone) {
+		this.memberphone = memberphone;
+	}
+
+
+	public String getMemberemail() {
+		return memberemail;
+	}
+
+
+	public void setMemberemail(String memberemail) {
+		this.memberemail = memberemail;
+	}
 	
-	
-	
+		
 }

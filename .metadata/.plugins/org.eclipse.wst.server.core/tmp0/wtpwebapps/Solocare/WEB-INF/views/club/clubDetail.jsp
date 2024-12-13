@@ -13,7 +13,11 @@
     <p>설명: ${club.clubDescription}</p>
     <p>카테고리: ${club.clubCategory}</p>
     <p>위치: ${club.clubLocation}</p>
+    
+    <a href="${pageContext.request.contextPath}/club/join?clubNum=${club.clubNum}">동호회 가입</a>
+    
     <a href="${pageContext.request.contextPath}/club/list">목록으로 돌아가기</a>
+        
     
 	<form action="${pageContext.request.contextPath}/club/update/${club.clubNum}" method="get">
 	    <input type="hidden" name="clubNum" value="${club.clubNum}"/>
@@ -23,6 +27,11 @@
     <form action="${pageContext.request.contextPath}/club/delete" method="post" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
     	<input type="hidden" name="clubNum" value="${club.clubNum}"/>
     	<input type="submit" value="삭제"/>
+	</form>
+	
+	<form action="${pageContext.request.contextPath}/club/membercheck" method="post">
+    	<input type="hidden" name="clubNum" value="${club.clubNum}"/>
+    	<input type="submit" value="멤버조회"/>
 	</form>
     
 </body>

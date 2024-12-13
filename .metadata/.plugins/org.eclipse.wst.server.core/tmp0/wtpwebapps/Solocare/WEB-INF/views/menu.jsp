@@ -143,7 +143,7 @@
             } else {
         %>
             <div class="user-links">
-                <a href="login" class="nav-link">로그인</a>
+                <a href="/Solocare/login" class="nav-link">로그인</a>
             </div>
         <%
             }

@@ -17,4 +17,6 @@ public interface memberService {
 	void deletemember(member mem);
 
 	boolean isIdExists(String id);
+
+	void joinClub(String memberId, int clubNum);
 }

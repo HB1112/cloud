@@ -8,6 +8,11 @@ public class club {
 	private String clubDescription;
 	private String clubCategory;
 	private String clubLocation;
+	private int memberCount;
+	// 기본 생성자
+    public club() {
+        this.memberCount = 1; // 기본값을 1로 설정
+    }
 	
 	public String getClubLeader() {
 		return clubLeader;
@@ -45,7 +50,11 @@ public class club {
 	public void setClubLocation(String clubLocation) {
 		this.clubLocation = clubLocation;
 	}
-	
-	
-	
+	public int getMembercount() {
+		return memberCount;
+	}
+	public void setMembercount(int memberCount) {
+		this.memberCount = memberCount;
+	}
+
 }

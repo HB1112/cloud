@@ -1,0 +1,23 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>동호회 멤버 조회</h1>
+	
+	<c:forEach var="clubMember" items="${clubmembers}">
+            <div class="club-box" onclick="location.href='detail/${club.clubNum}'"> 
+                <h3>${club.clubName}</h3>
+                <p>회장: ${club.clubLeader}</p>
+                <p>설명: ${club.clubDescription}</p>
+                <p>카테고리: ${club.clubCategory}</p>
+                <p>위치: ${club.clubLocation}</p>
+            </div>
+        </c:forEach>
+	
+</body>
+</html>

@@ -10,6 +10,7 @@ public class member {
 	private String gender;
 	private String birth;
 	private String address;
+
 	public String getId() {
 		return id;
 	}
@@ -59,5 +60,6 @@ public class member {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 	
 }

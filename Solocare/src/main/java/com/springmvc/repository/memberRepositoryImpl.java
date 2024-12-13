@@ -71,6 +71,7 @@ public class memberRepositoryImpl implements memberRepository {
 				mb.setGender(rs.getString(6));
 				mb.setBirth(rs.getString(7));
 				mb.setAddress(rs.getString(8));
+
 				return mb;
 			}
 		} catch (Exception e) {
@@ -151,4 +152,22 @@ public class memberRepositoryImpl implements memberRepository {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void joinClub(String memberId, int clubNum) {
+		System.out.println("memberRepositoryImpl joinClub()");
+		try {
+			conn = DBConnection.getConnection();
+			String sql = "update member set clubNum = ?  where id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, clubNum);
+			pstmt.setString(2, memberId);
+			pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			
+		}
+		
+	}
+
 }

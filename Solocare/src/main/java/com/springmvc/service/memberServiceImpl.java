@@ -61,4 +61,12 @@ public class memberServiceImpl implements memberService{
 		return memberrepository.isIdExists(id);
 	}
 
+
+
+	@Override
+	public void joinClub(String memberId, int clubNum) {
+		System.out.println("memberServiecImple joinClub()");
+		memberrepository.joinClub(memberId, clubNum);
+	}
+
 }
