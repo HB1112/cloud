@@ -73,7 +73,7 @@
     </style>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="font-family: 'Montserrat', sans-serif;">
-    <a class="navbar-brand" href="home">Solo Care</a>
+    <a class="navbar-brand" href="/Solocare/home">Solo Care</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -96,7 +96,7 @@
                 <div class="dropdown-menu" aria-labelledby="homeCareDropdown">
                     <a class="dropdown-item" href="board?category=tip&page=1">정보 공유 (집 꾸미기, 생활 팁)</a>
                     <a class="dropdown-item" href="tradeboard">중고거래</a>
-                    <a class="dropdown-item" href="club/board">동호회 관리 및 모집 / 필요시 대관 정보</a>
+                    <a class="dropdown-item" href="club/board">동호회</a>
                 </div>
             </li>
             <li class="nav-item dropdown">

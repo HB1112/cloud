@@ -25,9 +25,7 @@
 	<div class="container mt-4"> <!-- 추가적인 여백을 위해 container 사용 -->
 		<h1>동호회</h1>
 		<nav>
-			<a href="regist" class="btn btn-primary">동호회 등록</a>
 			<a href="list" class="btn btn-secondary">동호회 목록</a>
-			<a href="write" class="btn btn-success">작성</a>
 			<form action="myclub" method="post" style="display: inline;">
 			    <input type="hidden" name="id" value="${mem.id}"> <!-- 세션에서 가져온 멤버 ID로 설정 -->
 			    <button type="submit" class="btn btn-warning">내 동호회</button>

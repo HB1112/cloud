@@ -14,7 +14,7 @@
 	    <input type="text" id="clubName" name="clubName" value="${club.clubName}" required/><br/>
 	    
 	    <label for="clubLeader">회장:</label>
-	    <input type="text" id="clubLeader" name="clubLeader" value="${club.clubLeader}" required/><br/>
+	    <input type="text" id="clubLeader" name="clubLeader" value="${club.clubLeader}" readonly/><br/>
 	    
 	    <label for="clubDescription">설명:</label>
 	    <textarea id="clubDescription" name="clubDescription" required>${club.clubDescription}</textarea><br/>

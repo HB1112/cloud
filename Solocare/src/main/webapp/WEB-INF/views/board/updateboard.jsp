@@ -86,7 +86,7 @@
     }
     function goToDetail() {
         // 상세 페이지 URL로 이동
-        window.location.href = 'detail?num=' + document.newWrite.num.value; // 게시글 번호에 맞게 URL 수정
+        window.location.href = 'detailboard?boardnum=' + document.newWrite.num.value; // 게시글 번호에 맞게 URL 수정
     }
 </script>
 </head>
@@ -97,8 +97,7 @@
             <input type="hidden" name="num" value="${board.num}"/> <!-- 게시글 번호 -->
             <input type="hidden" name="regist_date" value="${board.regist_date}"/> <!-- 등록 날짜 -->
             <input type="hidden" name="hit" value="${board.hit}"/> <!-- 조회수 -->
-
-            <div class="mb-3">
+			<div class="mb-3">
                 <label>카테고리</label>
                 <select name="category" class="form-control">
                     <option value="tip" <c:if test="${board.category == 'tip'}">selected</c:if>>생활팁/정보</option>
@@ -106,7 +105,6 @@
                     <option value="buy" <c:if test="${board.category == 'buy'}">selected</c:if>>구매</option>
                 </select>
             </div>
-
             <div class="mb-3">
                 <label>아이디</label>
                 <input name="id" type="text" class="form-control" value="${board.id}" readonly>

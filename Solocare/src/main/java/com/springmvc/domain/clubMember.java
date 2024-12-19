@@ -9,7 +9,7 @@ public class clubMember
 	private String joinDate;
 	private String memberphone;
 	private String memberemail;
-	
+	private int memberjoin;
 
 	public clubMember() {}
 
@@ -71,6 +71,16 @@ public class clubMember
 
 	public void setMemberemail(String memberemail) {
 		this.memberemail = memberemail;
+	}
+
+
+	public int getMemberjoin() {
+		return memberjoin;
+	}
+
+
+	public void setMemberjoin(int memberjoin) {
+		this.memberjoin = memberjoin;
 	}
 	
 		

@@ -7,13 +7,18 @@ public class club {
 	private String clubName;
 	private String clubDescription;
 	private String clubCategory;
-	private String clubLocation;
-	private int memberCount;
+	private String region; // 시/도
+	private String district; // 구/군
+	private int count;
 	// 기본 생성자
-    public club() {
-        this.memberCount = 1; // 기본값을 1로 설정
-    }
+    public club() {}
 	
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
 	public String getClubLeader() {
 		return clubLeader;
 	}
@@ -44,17 +49,22 @@ public class club {
 	public void setClubCategory(String clubCategory) {
 		this.clubCategory = clubCategory;
 	}
-	public String getClubLocation() {
-		return clubLocation;
+
+
+	public String getRegion() {
+		return region;
 	}
-	public void setClubLocation(String clubLocation) {
-		this.clubLocation = clubLocation;
+
+	public void setRegion(String region) {
+		this.region = region;
 	}
-	public int getMembercount() {
-		return memberCount;
+
+	public String getDistrict() {
+		return district;
 	}
-	public void setMembercount(int memberCount) {
-		this.memberCount = memberCount;
+
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 
 }

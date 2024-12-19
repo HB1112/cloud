@@ -1,0 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2 class="title">${clubboard.subject}</h2>
+        <div class="meta-info">
+            <span>작성자: ${clubboard.id}</span>
+            <span>작성일: ${clubboard.regist_date}</span>
+            <span>조회수: ${clubboard.hit}</span>
+        </div>
+        <div class="content" id="content">
+            <p>${clubboard.content}</p>
+        </div>
+	
+	
+</body>
+</html>

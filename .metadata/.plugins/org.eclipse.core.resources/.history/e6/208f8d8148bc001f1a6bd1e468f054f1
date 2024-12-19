@@ -1,0 +1,235 @@
+package com.springmvc.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.springmvc.domain.club;
+import com.springmvc.domain.clubMember;
+import com.springmvc.domain.member;
+import com.springmvc.service.clubService;
+import com.springmvc.service.memberService;
+
+@Controller
+@RequestMapping("/club")
+public class clubcontroller { 
+
+    @Autowired
+    private clubService clubService; 
+    @Autowired
+    private memberService memberservice;
+    
+    @GetMapping
+    public String clubPage() {
+        return "club/clubBoard";
+    }
+    
+    //클럽 등록
+    @GetMapping("/regist") 
+    public String registClub() {
+        return "club/clubregist";
+    }
+    // 클럽 등록
+    @PostMapping("/regist")
+    public String addClub(@ModelAttribute club club, HttpSession session) { 
+       club = clubService.addClub(club);
+        
+       System.out.println(club.getClubNum());
+       member mem = (member) session.getAttribute("mem");
+       
+       clubMember clubmember = new clubMember();
+       clubmember.setMemberId(club.getClubLeader());
+       clubmember.setClubNum(club.getClubNum());
+       clubmember.setClubName(club.getClubName());
+       // 현재 날짜 및 시간 포맷 설정
+	   java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm");
+	   String join_date = formatter.format(new java.util.Date());
+       clubmember.setJoinDate(join_date);
+       
+       clubmember.setMemberphone(mem.getPhone());
+       clubmember.setMemberemail(mem.getEmail());
+       
+       clubService.addClubLeader(clubmember);
+        
+       return "redirect:/club/list";
+    }
+    
+    // 전부 다 read
+    @GetMapping("/list")
+    public String listClubs(@RequestParam(value = "category", required = false) String category,
+                            @RequestParam(value = "region", required = false) String region,
+                            @RequestParam(value = "searchType", required = false) String searchType,
+                            @RequestParam(value = "query", required = false) String query,
+                            Model model) {
+        List<club> clubs = clubService.getAllClubs(); // 전체 클럽 리스트 초기화
+
+        // 카테고리 필터링
+        if (category != null && !category.isEmpty()) {
+            clubs = clubService.getClubsByCategory(category);
+            model.addAttribute("selectedCategory", category); // 선택한 카테고리 모델에 추가
+        }
+
+        // 지역 필터링
+        if (region != null && !region.isEmpty()) {
+            clubs = clubService.getClubsByRegion(region); // 지역에 따른 클럽 목록 가져오기
+        }
+
+        // 검색 기능
+        if (searchType != null && query != null && !query.isEmpty()) {
+            if (category != null && !category.isEmpty()) {
+                // 카테고리 내에서 검색
+                clubs = clubService.searchClubsInCategory(category, searchType, query);
+            } else if (region != null && !region.isEmpty()) {
+                // 지역 내에서 검색
+                clubs = clubService.searchClubsInRegion(region, searchType, query);
+            } else {
+                // 전체에서 검색
+                clubs = clubService.searchClubs(searchType, query);
+            }
+        }
+
+        model.addAttribute("region", region);
+        model.addAttribute("clubs", clubs);
+        return "club/clubList"; // 클럽 리스트 페이지 반환
+    }
+
+
+    // 내 클럽
+    @PostMapping("/myclub")
+    public String myClublists(@RequestParam("id") String memberId, Model model) {
+        System.out.println("동호회 관리 요청, 멤버 ID: " + memberId);
+        List<club> clubs = clubService.getAllmyClubs(memberId);
+        model.addAttribute("clubs", clubs);
+        return "club/myclub"; // 클럽 리스트 페이지로 이동
+    }
+
+    // 하나씩 read
+    @GetMapping("/detail/{clubNum}")
+    public String clubDetail(@PathVariable int clubNum, Model model) {
+        System.out.println("전달받은 클럽 번호: " + clubNum); 
+        club club = clubService.getClubByNum(clubNum); 
+        System.out.println("조회한 클럽: " + club); 
+        
+        if (club == null) {
+            System.out.println("클럽 정보가 null입니다. 클럽 번호: " + clubNum);
+            return "error"; 
+        }
+        
+        model.addAttribute("club", club); 
+        return "club/clubDetail"; 
+    }
+    
+    
+    // Club U
+    @GetMapping("/update/{clubNum}")
+    public String showUpdateForm(@PathVariable int clubNum, Model model) {
+        club club = clubService.getClubByNum(clubNum); // 클럽 정보 조회
+        if (club == null) {
+            return "error"; // 클럽 정보가 없으면 에러 페이지로 이동
+        }
+        model.addAttribute("club", club); // 모델에 클럽 정보 추가
+        return "club/clubUpdate"; // 클럽 수정 페이지 반환
+    }
+    
+    @PostMapping("/update/submit")
+    public String updateClub(@ModelAttribute club club) {
+        clubService.updateClub(club); // 클럽 정보 업데이트
+        return "redirect:/club/detail/" + club.getClubNum(); // 업데이트 후 상세 페이지로 리다이렉트
+    }
+    // Club D
+    @PostMapping("/delete")
+    public String deleteClub(@RequestParam int clubNum) {
+        clubService.deleteClub(clubNum);
+        return "redirect:/club/list";
+    }
+    // Club member join
+    @GetMapping("join")
+    public String gomemberjoin(@RequestParam int clubNum, Model model) {
+    	club club = clubService.getClubByNum(clubNum);
+    	if (club == null) {
+            System.out.println("클럽 정보가 null입니다. 클럽 번호: " + clubNum);
+            return "error"; 
+        }
+    	model.addAttribute("club",club);
+    	
+    	return "club/clubjoin";
+    }
+    // clubmember join check
+    @GetMapping("/checkMembership")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> checkMembership(@RequestParam int clubNum, HttpSession session) {
+        member mem = (member) session.getAttribute("mem"); // 세션에서 멤버 정보 가져오기
+        Map<String, Object> response = new HashMap<>();
+        
+        if (mem == null) {
+            response.put("isMember", false);
+            return ResponseEntity.ok(response);
+        }
+
+        // DB에서 멤버가 해당 클럽에 가입되어 있는지 확인
+        boolean isMember = clubService.isMemberOfClub(mem.getId(), clubNum); // 서비스 메서드 호출
+        response.put("isMember", isMember);
+        
+        return ResponseEntity.ok(response);
+    }
+	 // Club member join
+    @PostMapping("join")
+    public String memberjoin(@ModelAttribute clubMember clubmember) {
+    	
+    	 // 현재 날짜 및 시간 포맷 설정
+	    java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm");
+	    String join_date = formatter.format(new java.util.Date());
+	    
+	    clubmember.setJoinDate(join_date);
+	    
+	    clubService.addClubMember(clubmember);
+	    
+	    memberservice.joinClub(clubmember.getMemberId(),clubmember.getClubNum());
+    	return "redirect:/club/list";
+    }
+    @GetMapping("/membercheck")
+    public String membercheck(@RequestParam int clubNum, Model model) {
+    	
+    	System.out.println("멤버체크 클럽넘버 : "+clubNum);
+    	List<clubMember> clubmembers = clubService.getAllClubMember(clubNum);
+    	model.addAttribute("clubmembers",clubmembers);
+    	return "club/membercheck";
+    }
+    @PostMapping("/approveMember")
+    public String approveMember(@RequestParam("memberId") String memberId, 
+                                @RequestParam("clubNum") int clubNum) {
+        // 클럽 멤버 승인 처리
+        clubService.approveMember(memberId, clubNum); // 승인을 위한 서비스 호출
+
+        // 승인된 멤버 수 증가
+        clubService.plusmemberCount(clubNum);
+
+        return "redirect:/club/membercheck?clubNum=" + clubNum;  // 승인 후 리다이렉트할 페이지
+    }
+    @PostMapping("/cancelMember")
+    public String cancelMember(@RequestParam("memberId") String memberId, 
+                                @RequestParam("clubNum") int clubNum) {
+        // 클럽 멤버 승인 처리
+        clubService.cancelMember(memberId, clubNum); // 승인을 위한 서비스 호출
+
+        // 승인된 멤버 수 증가
+        clubService.minusmemberCount(clubNum);
+
+        return "redirect:/club/membercheck?clubNum=" + clubNum;  // 승인 후 리다이렉트할 페이지
+    }
+}
+
