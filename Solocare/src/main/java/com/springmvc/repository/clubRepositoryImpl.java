@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import com.springmvc.domain.club;
 import com.springmvc.domain.clubMember;
 import com.springmvc.domain.clubboard;
+import com.springmvc.domain.clubboardcomment;
+import com.springmvc.domain.comment;
 
 @Repository
 public class clubRepositoryImpl implements clubRepository 
@@ -667,16 +669,39 @@ public class clubRepositoryImpl implements clubRepository
 			e.printStackTrace();
 		}
 	}
+	// 커뮤니티 페이지 네이션
+	@Override
+	public int getTotalClubBoardCount(int clubNum) {
+		int count = 0;
+	    try {
+	        conn = DBConnection.getConnection();
+	        String sql = "SELECT COUNT(*) FROM clubboard WHERE clubNum=?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, clubNum);
+	        rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            count = rs.getInt(1);
+	        }
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return count;
+	}
 	// 클럽 커뮤니티 getallboard R
 	@Override
-	public List<clubboard> getAllclubboard(int clubNum) {
+	public List<clubboard> getAllclubboard(int clubNum, int page, int pageSize) {
 	    List<clubboard> clubboards = new ArrayList<>();
-	    String sql = "SELECT * FROM clubboard WHERE clubNum = ?";
-	    
+	    String sql = "SELECT * FROM clubboard WHERE clubNum = ? ORDER BY num DESC LIMIT ? OFFSET ?"; // LIMIT과 OFFSET 추가
+
 	    try {
 	        conn = DBConnection.getConnection();
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setInt(1, clubNum);
+	        pstmt.setInt(2, pageSize); // 페이지당 게시글 수
+	        pstmt.setInt(3, (page - 1) * pageSize); // OFFSET 계산
+
 	        ResultSet rs = pstmt.executeQuery();
 	        
 	        while (rs.next()) {
@@ -704,6 +729,79 @@ public class clubRepositoryImpl implements clubRepository
 	    }
 	    
 	    return clubboards; // 클럽 게시글 리스트 반환
+	}
+	// 페이지네이션 search 토탈 카운트
+	@Override
+	public int getTotalSearchBoardCount(int clubNum, String items, String text) {
+	    int totalCount = 0; // 총 게시글 수를 저장할 변수
+	    String sql = "SELECT COUNT(*) FROM clubboard WHERE " + items + " LIKE ? AND clubNum = ?";
+
+	    try {
+	        conn = DBConnection.getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, "%" + text + "%"); // 검색어 조건
+	        pstmt.setInt(2, clubNum); // 클럽 번호 조건
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            totalCount = rs.getInt(1); // 첫 번째 컬럼의 값이 총 게시글 수
+	            System.out.println(totalCount);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace(); // 예외 처리
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace(); // 해제 중 예외 발생 시 출력
+	        }
+	    }
+	    return totalCount; // 총 게시글 수 반환
+	}
+	// 게시글 Search 결과 R
+	@Override
+	public List<clubboard> searchClubBoard(int clubNum, String items, String text, int page, int pageSize) {
+	    List<clubboard> clubboards = new ArrayList<>();
+	    
+	    try {
+	        conn = DBConnection.getConnection();
+	        // SQL 쿼리 작성: clubNum에 맞는 게시글을 검색
+	        String sql = "SELECT * FROM clubboard WHERE " + items + " LIKE ? AND clubNum = ? ORDER BY num DESC LIMIT ? OFFSET ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, "%" + text + "%"); // 검색어 조건
+	        pstmt.setInt(2, clubNum); // 클럽 번호 조건
+	        pstmt.setInt(3, pageSize); // 페이지당 게시글 수
+	        pstmt.setInt(4, (page - 1) * pageSize); // OFFSET 계산
+	        
+	        rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            clubboard board = new clubboard();
+	            board.setBoardnum(rs.getInt("num")); // 게시글 번호
+	            board.setMemberid(rs.getString("memberid")); // 작성자 ID
+	            board.setSubject(rs.getString("subject")); // 제목
+	            board.setContent(rs.getString("content")); // 내용
+	            board.setRegist_date(rs.getString("regist_date")); // 등록일
+	            board.setHit(rs.getInt("hit")); // 조회 수
+	            board.setClubNum(rs.getInt("clubNum")); // 클럽 번호
+	            
+	            clubboards.add(board); // 리스트에 추가
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace(); // 예외 처리
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace(); // 해제 중 예외 발생 시 출력
+	        }
+	    }
+	    
+	    return clubboards; // 검색된 게시글 리스트 반환
 	}
 	// club 커뮤니티 getoneclubboard R
 	@Override
@@ -733,6 +831,21 @@ public class clubRepositoryImpl implements clubRepository
 		
 		return clubboard;
 	}
+	// 게시판 조회 수 증가
+	@Override
+	public void incrementhit(int num) {
+		try {
+			conn=DBConnection.getConnection();
+			String sql = "update clubboard set hit = hit+1 where num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	// club board Update
 	@Override
 	public void updateClubboard(clubboard clubboard) {
@@ -768,6 +881,120 @@ public class clubRepositoryImpl implements clubRepository
 			e.printStackTrace();
 		}
 	}
+	// club board comment C
+	@Override
+	public void saveComment(clubboardcomment cbcommentDto) {
+		
+			System.out.println("CommentRepositoryImpl addComment()");
+		    System.out.println("댓글 내용: " + cbcommentDto.getCommentcontent());
+		    try {
+				conn=DBConnection.getConnection();
+				String sql = "INSERT INTO clubcomments (boardnum,clubNum, commentcontent, authorid, createDate, likes) VALUES (?, ?, ?, ?, ?, ?)";
+		        pstmt = conn.prepareStatement(sql);
+		        pstmt.setInt(1, cbcommentDto.getBoardnum());
+		        pstmt.setInt(2, cbcommentDto.getClubNum());
+		        pstmt.setString(3, cbcommentDto.getCommentcontent());
+		        pstmt.setString(4, cbcommentDto.getAuthorid());
+		        pstmt.setString(5, cbcommentDto.getCreatedDate()); // String을 직접 설정
+		        pstmt.setInt(6, cbcommentDto.getLikes());
+				
+				pstmt.executeUpdate();
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		   
+		
+	}
+	// 게시글 번호로 댓글 불러오기
+    @Override
+    public List<clubboardcomment> getCommentsByBoardNum(int boardnum) {
+        List<clubboardcomment> comments = new ArrayList<>();
+        try {
+            conn = DBConnection.getConnection(); // DB 연결
+            String sql = "SELECT * FROM clubcomments WHERE boardnum = ?"; // 게시글 번호로 댓글 조회
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, boardnum);
+            rs = pstmt.executeQuery(); // 쿼리 실행
+            
+            while (rs.next()) {
+                clubboardcomment comment = new clubboardcomment();
+                comment.setCommentnum(rs.getInt("commentnum")); // 댓글 번호
+                comment.setBoardnum(rs.getInt("boardnum")); // 게시글 번호
+                comment.setClubNum(rs.getInt("clubNum")); // 클럽 번호
+                comment.setCommentcontent(rs.getString("commentcontent")); // 댓글 내용
+                comment.setAuthorid(rs.getString("authorid")); // 작성자 ID
+                comment.setCreatedDate(rs.getString("createDate")); // 생성일
+                comment.setLikes(rs.getInt("likes")); // 좋아요 수
+                comments.add(comment); // 댓글 리스트에 추가
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // 오류 로그 출력
+        } finally {
+            // 리소스 정리
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return comments; // 댓글 리스트 반환
+    }
+    // 댓글 수정하기
+	@Override
+	public boolean updateComment(clubboardcomment commentDto) {
+		boolean isUpdated = false;
+        try {
+            conn = DBConnection.getConnection(); // DB 연결
+            String sql = "UPDATE clubcomments SET commentcontent = ? WHERE commentnum = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, commentDto.getCommentcontent()); // 수정할 댓글 내용
+            pstmt.setInt(2, commentDto.getCommentnum()); // 댓글 번호
+            
+            int rowsAffected = pstmt.executeUpdate(); // 쿼리 실행
+            isUpdated = rowsAffected > 0; // 수정 성공 여부 확인
+        } catch (Exception e) {
+            e.printStackTrace(); // 오류 로그 출력
+        } finally {
+            // 리소스 정리
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return isUpdated; // 수정 성공 여부 반환
+	}
+	// 댓글 삭제 기능
+	@Override
+	public boolean deleteComment(int commentnum) {
+		 boolean isDeleted = false;
+	        try {
+	            conn = DBConnection.getConnection(); // DB 연결
+	            String sql = "DELETE FROM clubcomments WHERE commentnum = ?";
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setInt(1, commentnum); // 댓글 번호 설정
+	            
+	            int rowsAffected = pstmt.executeUpdate(); // 쿼리 실행
+	            isDeleted = rowsAffected > 0; // 삭제 성공 여부 확인
+	        } catch (Exception e) {
+	            e.printStackTrace(); // 오류 로그 출력
+	        } finally {
+	            // 리소스 정리
+	            try {
+	                if (pstmt != null) pstmt.close();
+	                if (conn != null) conn.close();
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        }
+	        return isDeleted; // 삭제 성공 여부 반환
+	}
+
+	
 	
 	
 }

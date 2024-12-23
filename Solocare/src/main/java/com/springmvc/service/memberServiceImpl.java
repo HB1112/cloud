@@ -62,11 +62,11 @@ public class memberServiceImpl implements memberService{
 	}
 
 
-
 	@Override
-	public void joinClub(String memberId, int clubNum) {
-		System.out.println("memberServiecImple joinClub()");
-		memberrepository.joinClub(memberId, clubNum);
+	public void emailcheck(String email) {
+		System.out.println("memberServiceImple emailcheck()");
+		memberrepository.emailcheck(email);
+		
 	}
 
 }

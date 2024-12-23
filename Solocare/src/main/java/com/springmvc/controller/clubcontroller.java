@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +23,7 @@ import com.springmvc.domain.board;
 import com.springmvc.domain.club;
 import com.springmvc.domain.clubMember;
 import com.springmvc.domain.clubboard;
+import com.springmvc.domain.clubboardcomment;
 import com.springmvc.domain.member;
 import com.springmvc.service.clubService;
 import com.springmvc.service.memberService;
@@ -200,7 +202,6 @@ public class clubcontroller {
 	    
 	    clubService.addClubMember(clubmember);
 	    
-	    memberservice.joinClub(clubmember.getMemberId(),clubmember.getClubNum());
     	return "redirect:/club/list";
     }
     @GetMapping("/membercheck")
@@ -262,22 +263,67 @@ public class clubcontroller {
     
     // 클럽 별 게시판  all Read
     @GetMapping("/community")
-    public String goCommunityList(@RequestParam("clubNum") int clubNum, Model model) {
-        // 폼에서 전송된 clubNum을 사용하여 필요한 로직을 처리
+    public String goCommunityList(@RequestParam("clubNum") int clubNum, @RequestParam(defaultValue = "1") int page, Model model) {
         System.out.println("클럽 번호: " + clubNum);
-        
-        List<clubboard> boards = clubService.getAllclubboard(clubNum);
+
+        int pageSize = 10; // 페이지당 게시글 수
+        int totalBoards = clubService.getTotalClubBoardCount(clubNum); // 클럽 게시글 총 수
+        int totalPages = (int) Math.ceil((double) totalBoards / pageSize); // 총 페이지 수
+
+        List<clubboard> boards = clubService.getAllclubboard(clubNum, page, pageSize);
         model.addAttribute("clubboards", boards);
-        model.addAttribute("clubNum",clubNum);
+        model.addAttribute("clubNum", clubNum);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
         
+        // 시작 번호
+        int startNumber = totalBoards - (page - 1) * pageSize; // 현재 페이지의 시작 번호
+        model.addAttribute("startNumber", startNumber);
         // 클럽 커뮤니티 페이지로 이동
         return "club/clubcommunity"; 
     }
+    // 클럽 게시판 검색 기능
+    @GetMapping("/searchclubboard")
+    public String searchClubBoard(
+            @RequestParam("clubNum") int clubNum,
+            @RequestParam("items") String items,
+            @RequestParam("text") String text,
+            @RequestParam(defaultValue = "1") int page,
+            Model model) {
+        
+        System.out.println("ClubBoardController searchClubBoard()");
+        // 로그 확인용
+        System.out.println("검색 조건: " + items);
+        System.out.println("검색어: " + text);
+        System.out.println("페이지: " + page);
+        
+        int pageSize = 10; // 페이지당 게시글 수
+        int totalBoards = clubService.getTotalSearchBoardCount(clubNum, items, text); // 검색 게시글 수
+        int totalPages = (int) Math.ceil((double) totalBoards / pageSize); // 총 페이지 수
+        
+        List<clubboard> searchResult = clubService.searchClubBoard(clubNum, items, text, page, pageSize);
+        model.addAttribute("clubboards", searchResult);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("items", items);
+        model.addAttribute("text", text);
+        model.addAttribute("clubNum", clubNum);
+
+        // 시작 번호 계산 (최신 게시물부터 시작)
+        int startNumber = totalBoards - (page - 1) * pageSize; // 현재 페이지의 시작 번호
+        model.addAttribute("startNumber", startNumber);
+
+        // 검색 결과 페이지로 이동
+        return "club/clubcommunity"; // JSP 페이지 이름
+    }
+
     // 클럽 게사핀 one read
     @GetMapping("/detailboard")
     public String godetail(@RequestParam("boardnum") int boardnum, Model model) {
     	System.out.println("클럽 게시물 번호: " + boardnum);
     	clubboard clubboard = clubService.getOneclubboard(boardnum);
+    	
+    	clubService.incrementhit(boardnum);
     	
     	model.addAttribute("clubboard",clubboard);
     	
@@ -308,6 +354,91 @@ public class clubcontroller {
     	
     	return "redirect:/club/community?clubNum="+clubNum; 
     }
+    // 클럽 게시판 댓글 C
+    @PostMapping("/addComment")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> addComment(@RequestBody clubboardcomment cbcommentDto) {
+        System.out.println("가져오는지 확인");
+
+        Map<String, Object> response = new HashMap<>();
+        try {
+            System.out.println(cbcommentDto.getBoardnum());
+            // 댓글 추가 로직
+            cbcommentDto.setLikes(0); // 기본값으로 좋아요 수를 0으로 설정
+            java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm");
+            String regist_date = formatter.format(new java.util.Date());
+            cbcommentDto.setCreatedDate(regist_date);
+
+            // 댓글 추가 서비스 호출
+            clubService.saveComment(cbcommentDto);
+            
+            // 성공적으로 추가된 경우
+            response.put("success", true);
+            response.put("commentnum", cbcommentDto.getCommentnum());
+            response.put("boardnum", cbcommentDto.getBoardnum());
+            response.put("authorId", cbcommentDto.getAuthorid());
+            response.put("content", cbcommentDto.getCommentcontent());
+            response.put("createdDate", cbcommentDto.getCreatedDate());
+            response.put("likes", cbcommentDto.getLikes());
+            
+        } catch (Exception e) {
+            response.put("success", false);
+            e.printStackTrace(); // 예외 로그 출력
+        }
+        return ResponseEntity.ok(response);
+    }
+    // 클럽 게시판 댓글 R
+    @PostMapping("/comments")
+    public ResponseEntity<List<clubboardcomment>> getComments(@RequestBody Map<String, Integer> request) {
+        int boardnum = request.get("boardnum");
+        List<clubboardcomment> comments = clubService.getCommentsByBoardNum(boardnum);
+        return ResponseEntity.ok(comments);
+    }
+    // 댓글 수정 메소드
+    @PostMapping("/updateComment")
+    public ResponseEntity<Map<String, Object>> updateComment(@RequestBody clubboardcomment commentDto) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 댓글 수정 로직
+            boolean isUpdated = clubService.updateComment(commentDto);
+
+            if (isUpdated) {
+                response.put("success", true);
+                response.put("message", "댓글이 성공적으로 수정되었습니다.");
+            } else {
+                response.put("success", false);
+                response.put("message", "댓글 수정에 실패했습니다.");
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "댓글 수정 중 오류가 발생했습니다.");
+            e.printStackTrace(); // 오류 로그 출력
+        }
+        return ResponseEntity.ok(response); // JSON 형태로 응답 반환
+    }
     
+    // 댓글 삭제 메서드
+    @PostMapping("/deleteComment")
+    public ResponseEntity<Map<String, Object>> deleteComment(@RequestBody Map<String, Integer> request) {
+        Map<String, Object> response = new HashMap<>();
+        int commentnum = request.get("commentnum"); // 요청 본문에서 댓글 번호 가져오기
+
+        try {
+            boolean isDeleted = clubService.deleteComment(commentnum); // 댓글 삭제 서비스 호출
+            if (isDeleted) {
+                response.put("success", true);
+                response.put("message", "댓글이 성공적으로 삭제되었습니다.");
+            } else {
+                response.put("success", false);
+                response.put("message", "댓글 삭제에 실패했습니다.");
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "댓글 삭제 중 오류가 발생했습니다.");
+            e.printStackTrace(); // 오류 로그 출력
+        }
+        return ResponseEntity.ok(response); // JSON 형태로 응답 반환
+    }
+
 }
 

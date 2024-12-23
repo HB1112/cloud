@@ -10,6 +10,6 @@ public interface memberRepository {
 	void updatemember(member member);
 	void deletemember(member mem);
 	boolean isIdExists(String id);
-	void joinClub(String memberId, int clubNum);
+	void emailcheck(String email);
 	
 }

@@ -11,6 +11,8 @@ D:\cloud\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\761681635.index
 \Solocare\src\main\java
 D:\cloud\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3794796720.index
 \Solocare\src\main\java
+D:\cloud\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\933566188.index
+\shor_email\src\main\java
 D:\cloud\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4255607197.index
 \Solocare5\src\main\java
 D:\cloud\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4139021408.index

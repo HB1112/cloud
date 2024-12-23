@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value=""/>
+		<item key="selection" value="framework"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="sido"/>
-			<item value="region"/>
-			<item value="count"/>
-			<item value="clubMember"/>
-			<item value="club.setMembercount(rs.getInt(&quot;memberCount&quot;));"/>
-			<item value="join"/>
-			<item value="gu"/>
-			<item value="mem"/>
+			<item value="framework"/>
+			<item value="frame"/>
 			<item value="gson"/>
-			<item value="buy"/>
-			<item value="search"/>
-			<item value="board"/>
+			<item value="start"/>
+			<item value="jack"/>
+			<item value="faster"/>
+			<item value="clubName"/>
+			<item value="count"/>
+			<item value="boardlist"/>
+			<item value="incre"/>
+			<item value="조회수"/>
+			<item value="comment"/>
+			<item value="댓글"/>
+			<item value="action"/>
+			<item value="contentElement"/>
 		</list>
 		<list key="replacehistory">
+			<item value="board"/>
 			<item value="coutn"/>
 			<item value="club.setCount(rs.getInt(&quot;memberCount&quot;));"/>
 		</list>

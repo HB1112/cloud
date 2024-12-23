@@ -35,11 +35,12 @@
     </style>
 </head>
 <body>
+	<%
+	  int startNumber = (Integer) request.getAttribute("startNumber"); // 시작 번호
+	%>
     <%@ include file="../menu.jsp"%>
     <div class="container">
         <h1 class="mt-4">클럽 게시판</h1>
-        <h2>모집 정보</h2>
-        <p>이곳에서 동호회에 대한 모집 정보를 확인하세요.</p>
         
         <!-- 게시글 작성 버튼 추가 -->
         <div class="mb-3">
@@ -61,7 +62,7 @@
                 <!-- 게시글 리스트를 출력 -->
                 <c:forEach var="board" items="${clubboards}">
                     <tr>
-                        <td>${board.boardnum}</td>
+                        <td><%= startNumber-- %></td> <!-- 번호 -->
                         <td><a href="detailboard?boardnum=${board.boardnum}">${board.subject}</a></td>
                         <td>${board.memberid}</td>
                         <td>${board.regist_date}</td>
@@ -75,6 +76,65 @@
                 </c:if>
             </tbody>
         </table>
+
+        <!-- 페이지네이션 -->
+		<div class="pagination">
+		    <c:if test="${currentPage > 1}">
+		       <c:choose>
+		           <c:when test="${not empty items and not empty text}">
+		               <a href="searchclubboard?clubNum=${clubNum}&page=${currentPage - 1}&items=${items}&text=${text}" class="btn btn-secondary">이전</a>
+		           </c:when>
+		           <c:otherwise>
+		               <a href="community?clubNum=${clubNum}&page=${currentPage - 1}" class="btn btn-secondary">이전</a>
+		           </c:otherwise>
+		       </c:choose>
+		   </c:if>
+		
+		   <c:forEach begin="1" end="${totalPages}" var="i">
+		       <c:choose>
+		           <c:when test="${i == currentPage}">
+		               <span class="btn btn-primary">${i}</span> <!-- 현재 페이지 강조 -->
+		           </c:when>
+		           <c:otherwise>
+		               <c:choose>
+		                   <c:when test="${not empty items and not empty text}">
+		                       <a href="searchclubboard?clubNum=${clubNum}&page=${i}&items=${items}&text=${text}" class="btn btn-light">${i}</a>
+		                   </c:when>
+		                   <c:otherwise>
+		                       <a href="community?clubNum=${clubNum}&page=${i}" class="btn btn-light">${i}</a>
+		                   </c:otherwise>
+		               </c:choose>
+		           </c:otherwise>
+		       </c:choose>
+		   </c:forEach>
+		
+		   <c:if test="${currentPage < totalPages}">
+		       <c:choose>
+		           <c:when test="${not empty items and not empty text}">
+		               <a href="searchclubboard?clubNum=${clubNum}&page=${currentPage + 1}&items=${items}&text=${text}" class="btn btn-secondary">다음</a>
+		           </c:when>
+		           <c:otherwise>
+		               <a href="community?clubNum=${clubNum}&page=${currentPage + 1}" class="btn btn-secondary">다음</a>
+		           </c:otherwise>
+		       </c:choose>
+		   </c:if>
+		</div>
+        <!-- 검색 -->
+        <div class="search-form">				
+        <form action="searchclubboard" method="get">
+            <input type="hidden" name="clubNum" value="${clubNum}">
+            <input type="hidden" name="page" value="1">
+        
+            <select name="items">
+                <option value="subject">제목</option>
+                <option value="content">내용</option>
+            </select>
+            <input type="text" name="text" placeholder="검색어를 입력하세요" required>
+            <button type="submit">검색</button>
+        </form>
+    </div>
+        
+        
     </div>
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.springmvc.domain.club;
 import com.springmvc.domain.clubMember;
 import com.springmvc.domain.clubboard;
+import com.springmvc.domain.clubboardcomment;
 import com.springmvc.repository.clubRepository;
 
 @Service
@@ -128,9 +129,9 @@ public class clubServiceImpl implements clubService
 	}
 
 	@Override
-	public List<clubboard> getAllclubboard(int clubNum) {
+	public List<clubboard> getAllclubboard(int clubNum, int page, int pageSize) {
 		
-		return clubRepository.getAllclubboard(clubNum);
+		return clubRepository.getAllclubboard(clubNum,page,pageSize);
 	}
 
 	@Override
@@ -154,6 +155,54 @@ public class clubServiceImpl implements clubService
 	@Override
 	public void deleteclubboard(int boardnum) {
 		clubRepository.deleteclubboard(boardnum);
+	}
+
+	@Override
+	public void saveComment(clubboardcomment cbcommentDto) {
+		clubRepository.saveComment(cbcommentDto);
+		
+	}
+
+	@Override
+	public List<clubboardcomment> getCommentsByBoardNum(int boardnum) {
+		// TODO Auto-generated method stub
+		return clubRepository.getCommentsByBoardNum(boardnum);
+	}
+
+	@Override
+	public boolean updateComment(clubboardcomment commentDto) {
+		
+		return clubRepository.updateComment(commentDto);
+	}
+
+	@Override
+	public boolean deleteComment(int commentnum) {
+		
+		return clubRepository.deleteComment(commentnum);
+	}
+
+	@Override
+	public void incrementhit(int boardnum) {
+		clubRepository.incrementhit(boardnum);
+		
+	}
+
+	@Override
+	public int getTotalClubBoardCount(int clubNum) {
+		// TODO Auto-generated method stub
+		return clubRepository.getTotalClubBoardCount(clubNum);
+	}
+
+	@Override
+	public int getTotalSearchBoardCount(int clubNum, String items, String text) {
+		
+		return clubRepository.getTotalSearchBoardCount(clubNum,items,text);
+	}
+
+	@Override
+	public List<clubboard> searchClubBoard(int clubNum, String items, String text, int page, int pageSize) {
+		
+		return clubRepository.searchClubBoard(clubNum, items, text, page, pageSize);
 	}
 
 

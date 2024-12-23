@@ -82,6 +82,7 @@ public class clubMember
 	public void setMemberjoin(int memberjoin) {
 		this.memberjoin = memberjoin;
 	}
+
 	
 		
 }

@@ -6,6 +6,7 @@ public class member {
 	private String pw;
 	private String name;
 	private String email;
+	private int emailcheck;
 	private String phone;
 	private String gender;
 	private String birth;
@@ -59,6 +60,12 @@ public class member {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	public int getEmailcheck() {
+		return emailcheck;
+	}
+	public void setEmailcheck(int emailcheck) {
+		this.emailcheck = emailcheck;
 	}
 
 	

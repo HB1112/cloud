@@ -18,5 +18,5 @@ public interface memberService {
 
 	boolean isIdExists(String id);
 
-	void joinClub(String memberId, int clubNum);
+	void emailcheck(String email);
 }

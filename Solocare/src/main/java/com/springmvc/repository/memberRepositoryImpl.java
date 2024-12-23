@@ -23,7 +23,7 @@ public class memberRepositoryImpl implements memberRepository {
 		System.out.println(member.getName());
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "insert into member values(?,?,?,?,?,?,?,?)";
+			String sql = "insert into member(id,pw,name,email,phone,gender,birth,address) values(?,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getId());
 			pstmt.setString(2, member.getPw());
@@ -41,6 +41,39 @@ public class memberRepositoryImpl implements memberRepository {
 			closeResources();
 		}
 	}
+	
+	// 회원가입 이메일 인증
+	@Override
+	public void emailcheck(String email) {
+	    System.out.println("memberRepositoryImpl emailcheck()");
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+
+	    try {
+	        conn = DBConnection.getConnection();
+	        String sql = "UPDATE member SET emailcheck = 1 WHERE email = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, email);
+
+	        int rowsAffected = pstmt.executeUpdate();
+	        if (rowsAffected > 0) {
+	            System.out.println("이메일 인증 완료: " + email);
+	        } else {
+	            System.out.println("해당 이메일이 존재하지 않습니다: " + email);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        // 리소스 해제
+	        try {
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+
 
 	@Override
 	public member getmemberById(String id) {
@@ -67,10 +100,11 @@ public class memberRepositoryImpl implements memberRepository {
 				mb.setPw(rs.getString(2));
 				mb.setName(rs.getString(3));
 				mb.setEmail(rs.getString(4));
-				mb.setPhone(rs.getString(5));
-				mb.setGender(rs.getString(6));
-				mb.setBirth(rs.getString(7));
-				mb.setAddress(rs.getString(8));
+				mb.setEmailcheck(rs.getInt(5));
+				mb.setPhone(rs.getString(6));
+				mb.setGender(rs.getString(7));
+				mb.setBirth(rs.getString(8));
+				mb.setAddress(rs.getString(9));
 
 				return mb;
 			}
@@ -152,22 +186,4 @@ public class memberRepositoryImpl implements memberRepository {
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public void joinClub(String memberId, int clubNum) {
-		System.out.println("memberRepositoryImpl joinClub()");
-		try {
-			conn = DBConnection.getConnection();
-			String sql = "update member set clubNum = ?  where id=?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, clubNum);
-			pstmt.setString(2, memberId);
-			pstmt.executeUpdate();
-			
-		}catch(Exception e) {
-			
-		}
-		
-	}
-
 }

@@ -96,7 +96,7 @@
                 <div class="dropdown-menu" aria-labelledby="homeCareDropdown">
                     <a class="dropdown-item" href="board?category=tip&page=1">정보 공유 (집 꾸미기, 생활 팁)</a>
                     <a class="dropdown-item" href="tradeboard">중고거래</a>
-                    <a class="dropdown-item" href="club/board">동호회</a>
+                    <a class="dropdown-item" href="/Solocare/club/board">동호회</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
