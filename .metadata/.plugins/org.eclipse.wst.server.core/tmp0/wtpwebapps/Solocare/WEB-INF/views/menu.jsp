@@ -72,6 +72,7 @@
 		}
     </style>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="font-family: 'Montserrat', sans-serif;">
     <a class="navbar-brand" href="/Solocare/home">Solo Care</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,15 +80,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="shoppingDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    쇼핑 
-                </a>
-                <div class="dropdown-menu" aria-labelledby="shoppingDropdown">
-                    <a class="dropdown-item" href="search">1인 가구 맞춤 가전 제품</a>
-                    <a class="dropdown-item" href="#">1인 가구 맞춤 식자재</a>
-                    <a class="dropdown-item" href="#">보안 제품 추천</a>
-                </div>
+            <li class="nav-item">
+                <a class="nav-link" href="search">쇼핑</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="homeCareDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

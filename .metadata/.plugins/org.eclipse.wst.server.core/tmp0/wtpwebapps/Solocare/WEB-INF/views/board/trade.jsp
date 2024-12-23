@@ -36,6 +36,7 @@
     <div class="container">
         <h1>물품 거래 페이지</h1>
         <p>원하는 거래 유형을 선택하세요:</p>
+        <a class="button" href="board?category=tip&page=1">정보 공유 (집 꾸미기, 생활 팁)</a>
         <a href="board?category=sell" class="button">판매하기</a>
         <a href="board?category=buy" class="button">구매하기</a>
     </div>

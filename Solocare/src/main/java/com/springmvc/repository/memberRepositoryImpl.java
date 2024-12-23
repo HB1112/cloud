@@ -23,16 +23,15 @@ public class memberRepositoryImpl implements memberRepository {
 		System.out.println(member.getName());
 		try {
 			conn = DBConnection.getConnection();
-			String sql = "insert into member(id,pw,name,email,phone,gender,birth,address) values(?,?,?,?,?,?,?,?)";
+			String sql = "insert into member(id,pw,name,email,phone,birth,address) values(?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getId());
 			pstmt.setString(2, member.getPw());
 			pstmt.setString(3, member.getName());
 			pstmt.setString(4, member.getEmail());
 			pstmt.setString(5, member.getPhone());
-			pstmt.setString(6, member.getGender());
-			pstmt.setString(7, member.getBirth());
-			pstmt.setString(8, member.getAddress());
+			pstmt.setString(6, member.getBirth());
+			pstmt.setString(7, member.getAddress());
 			pstmt.executeUpdate();
 			
 		} catch (Exception e) {
@@ -102,9 +101,8 @@ public class memberRepositoryImpl implements memberRepository {
 				mb.setEmail(rs.getString(4));
 				mb.setEmailcheck(rs.getInt(5));
 				mb.setPhone(rs.getString(6));
-				mb.setGender(rs.getString(7));
-				mb.setBirth(rs.getString(8));
-				mb.setAddress(rs.getString(9));
+				mb.setBirth(rs.getString(7));
+				mb.setAddress(rs.getString(8));
 
 				return mb;
 			}

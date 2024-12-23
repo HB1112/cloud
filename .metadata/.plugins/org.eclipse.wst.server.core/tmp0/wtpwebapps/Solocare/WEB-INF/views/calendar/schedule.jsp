@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>일정 추가</title>
 <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,9 +37,9 @@
 </head>
 <body>
 <form action="calendar" method="post">
-	<div>
-        <label for="title">아이디:</label>
-        <input type="text" id="id" name="id" value="${userId}" readonly>
+    <div>
+        <label for="userId">아이디:</label>
+        <input type="text" id="userId" name="userId" value="${userId}" readonly>
     </div>
     <div>
         <label for="title">제목:</label>

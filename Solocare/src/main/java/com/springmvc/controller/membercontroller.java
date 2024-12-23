@@ -77,12 +77,10 @@ public class membercontroller {
 		return "member/addmember";
 	}
 
-	@PostMapping("/addMember")
+	@PostMapping("/addmember")
     public String addMember(@ModelAttribute member member,
                             @RequestParam("mailDomain") String mailDomain,
-                            @RequestParam("birthyy") String birthyy,
-                            @RequestParam("birthmm") String birthmm,
-                            @RequestParam("birthdd") String birthdd,
+                            @RequestParam("birth") String birth,
                             Model model) {
         // 이메일 주소 통합
         String fullEmail = member.getEmail() + "@" + mailDomain;
@@ -100,11 +98,6 @@ public class membercontroller {
 		message.setFrom(from);
 		sender.send(message);
 		System.out.println("전송완료");
-        
-
-        // 생일 통합
-        String birthDate = birthyy + "-" + birthmm + "-" + birthdd;
-        member.setBirth(birthDate);
 
         // 데이터 처리 (예: 데이터베이스에 저장)
 
@@ -164,7 +157,6 @@ public class membercontroller {
 	@PostMapping("/updatemember")
 	public String updatemember(@ModelAttribute member member,  @RequestParam("mailDomain") String mailDomain) {
 		System.out.println(member.getName());
-		System.out.println(member.getGender());
 
 		String fullEmail = member.getEmail() + "@" + mailDomain;
         member.setEmail(fullEmail);

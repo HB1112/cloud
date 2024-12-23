@@ -4,6 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <title>일정 수정</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+        }
+        h2 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
@@ -11,8 +54,11 @@
 
 <form action="update" method="post">
     <div>
-        <label for="id">ID:</label>
-        <input type="text" id="id" name="id" value="${calendar.id}" readonly>
+    	<input type="hidden" id="calendarNum" name="calendarNum" value="${calendarNum}">
+    </div>
+    <div>
+        <label for="userId">사용자 ID:</label>
+        <input type="text" id="userId" name="userId" value="${calendar.userId}" readonly>
     </div>
     <div>
         <label for="title">제목:</label>
@@ -25,6 +71,10 @@
     <div>
         <label for="end">종료:</label>
         <input type="datetime-local" id="end" name="end" value="${calendar.end}" required>
+    </div>
+    <div>
+        <label for="description">내용:</label>
+        <textarea id="description" name="description" rows="4" cols="50" required>${calendar.description}</textarea>
     </div>
     <div>
         <button type="submit">수정</button>

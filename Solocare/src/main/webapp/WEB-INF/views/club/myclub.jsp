@@ -39,6 +39,7 @@
 				    <input type="hidden" name="clubNum" value="${club.clubNum}"> <!-- 세션에서 가져온 멤버 ID로 설정 -->
 				    <button type="submit" class="btn btn-success">동호회 커뮤니티</button> <!-- 세션 ID를 포함한 버튼 -->
 				</form>
+				<a href="clubcalendar/search/${club.clubNum}">동호회 일정</a>
             </div>
         </c:forEach>
     </div>

@@ -1,166 +1,426 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.springmvc.domain.Product" %>
-<%@ page import="com.springmvc.domain.SearchResult" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>검색 결과</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap">
     <style>
-        body {
-            font-family: 'Noto Sans', 'Noto Serif', Arial, sans-serif;
-            background-color: #f8f9fa; /* 연한 배경색 */
-        }
-        .container {
-            max-width: 1200px; /* 최대 너비 설정 */
-            margin: auto; /* 가운데 정렬 */
-        }
-        h1 {
-            color: #333; /* 제목 색상 */
-        }
-        .product-card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 20px; /* 패딩 증가 */
-            margin-bottom: 30px; /* 카드 간격 증가 */
-            text-align: center;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: #fff; /* 카드 배경색 */
-            height: 360px; /* 카드 높이 조정 */
-            display: flex; /* Flexbox 사용 */
-            flex-direction: column; /* 세로 방향 정렬 */
-            justify-content: space-between; /* 요소 간격 조정 */
-        }
-        .product-card img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 15px; /* 이미지와 텍스트 간격 증가 */
-            max-height: 220px; /* 이미지 최대 높이 설정 (키움) */
-            cursor: pointer; /* 포인터 커서 추가 */
-        }
-        .product-card h3 {
-            font-size: 18px; /* 제목 크기 조정 */
-            font-weight: 500;
-            margin: 10px 0; /* 제목과 다른 요소 간격 */
-            overflow: hidden; /* overflow 숨기기 */
-            text-overflow: ellipsis; /* 텍스트가 넘칠 경우 "..." 표시 */
-            white-space: nowrap; /* 텍스트가 한 줄로 표시되도록 설정 */
-        }
-        .product-card p {
-            margin: 5px 0; /* 가격 마진 조정 */
-            font-size: 16px; /* 가격 폰트 크기 조정 */
-            color: #333; /* 가격 색상 */
-        }
-        .pagination {
-            justify-content: center; /* 중앙 정렬 */
-            margin-top: 20px; /* 페이지네이션과 카드 간격 */
-        }
-        .pagination a, .pagination strong {
-            padding: 5px 10px;
-            margin: 0 2px;
-            text-decoration: none;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            color: #333; /* 기본 색상 */
-            background-color: #fff; /* 기본 배경색: 하얀색 */
-        }
-        .pagination a:hover, .pagination strong {
-            background-color: #222; /* 더 진한 검은색 */
-            color: #fff; /* 클릭 시 텍스트 색상: 흰색 */
-        }
-        .sort-select {
-            width: auto; /* 드롭다운 너비 자동 조정 */
-        }
-        .search-form {
-            margin-bottom: 20px; /* 카드와의 간격 조정 */
-            padding: 15px; /* 패딩 추가 */
-            background-color: #fff; /* 배경색 */
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-        }
-        .btn-primary {
-            background-color: #222; /* 버튼 배경색: 더 진한 검은색 */
-            border: none; /* 경계선 없애기 */
-        }
-        .btn-primary:hover {
-            background-color: #444; /* 버튼 호버 색상: 검은색 */
-        }
+    body {
+        background-color: #fafafa;
+        color: #333;
+        font-family: 'Noto Sans KR', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container-fluid.main-container {
+        padding: 20px;
+    }
+
+    /* 사이드바 카테고리 영역 */
+    .category-sidebar {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .category-sidebar h4 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .category-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .category-list li {
+        margin: 10px 0;
+        position: relative;
+    }
+
+    .category-list input[type="radio"] {
+        margin-right: 5px;
+    }
+
+    .category-list label {
+        cursor: pointer;
+        font-size: 0.95rem;
+    }
+
+    /* 서브카테고리 표시 */
+    .subcategory {
+        display: none;
+        margin-left: 20px;
+        border-left: 1px solid #ddd;
+        padding-left: 10px;
+    }
+
+    .subcategory.visible {
+        display: block;
+    }
+
+    /* 카테고리 검색 버튼 */
+    .btn-category-search {
+        background: #fff;
+        border: 1px solid #333;
+        color: #333;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        padding: 5px 10px;
+        margin-top: 10px;
+    }
+    .btn-category-search:hover {
+        background: #333;
+        color: #fff;
+    }
+
+    /* 상단바 (결과 페이지 상단 영역) */
+    .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .top-bar-left span {
+        font-size:1.1rem; 
+        font-weight:700;
+    }
+
+    .top-bar-right {
+        display: flex;
+        align-items: center;
+    }
+
+    .top-bar-right .input-group {
+        width: 200px; /* 검색창 크기 축소 */
+        margin-right: 10px;
+    }
+
+    .top-bar-right .form-control {
+        border: 1px solid #ccc;
+        background: #fff;
+        color: #333;
+    }
+
+    .top-bar-right .btn-primary {
+        border: 1px solid #ccc;
+        border-left: none;
+        background: #333;
+        color: #fff;
+        font-size: 0.9rem;
+    }
+
+    .top-bar-right .btn-primary:hover {
+        background: #555;
+    }
+
+    .top-bar-right select {
+        border: 1px solid #ccc;
+        background: #fff;
+        color: #333;
+        padding: 5px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    /* 상품 카드 영역 */
+    .card {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        transition: box-shadow 0.3s ease;
+    }
+    .card:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .card-img-top {
+        height: 180px; /* 이미지 높이 일정하게 */
+        object-fit: cover;
+        border-bottom: 1px solid #eee;
+    }
+
+    .card-body {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* 버튼을 아래로 밀기 */
+    }
+
+    .card-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .brand-or-mall {
+        font-size: 0.8rem;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .card-text {
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .card .btn-primary {
+        background: #fff;
+        border: 1px solid #333;
+        color: #333;
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
+    .card .btn-primary:hover {
+        background: #333;
+        color: #fff;
+    }
+
+    /* 페이지네이션 */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        list-style: none;
+    }
+
+    .pagination a, .pagination span {
+        margin: 0 5px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        text-decoration: none;
+        color: #333;
+        background: #fff;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    .pagination a.active {
+        background-color: #333;
+        color: #fff;
+        border-color: #333;
+    }
+
+    .pagination span {
+        color: #666;
+    }
     </style>
 </head>
 <body>
-<%@ include file="menu.jsp"%>
 
-<div class="container mt-4">
-    <h1 class="mb-4">검색 결과</h1>
+<div id="menuWrapper">
+    <%@ include file="menu.jsp" %>
+</div>
 
-    <c:choose>
-        <c:when test="${not empty searchResult.products}">
-            <!-- Bootstrap Grid for Product Cards -->
-            <div class="row">
-                <c:forEach var="product" items="${searchResult.products}">
-                    <div class="col-sm-6 col-md-3 mb-4"> <!-- 한 줄에 4개, 아래 간격 추가 -->
-                        <div class="product-card">
-                            <a href="${product.link}" target="_blank"> <!-- 이미지 클릭 시 링크로 이동 -->
-                                <img src="${product.image}" alt="${product.name}">
-                            </a>
-                            <h3>${product.name}</h3> <!-- 제목만 표시 -->
-                            <p>가격: ${product.price}</p> <!-- 가격 표시 -->
-                        </div>
+<div class="container-fluid main-container">
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <span>검색 결과</span>
+        </div>
+        <div class="top-bar-right">
+            <form id="searchForm" action="${pageContext.request.contextPath}/results" method="get" class="d-flex">
+                <div class="input-group">
+                    <input type="text" id="searchQuery" name="query" value="${param.query}" class="form-control" placeholder="검색...">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">검색</button>
                     </div>
-                </c:forEach>
+                </div>
+            </form>
+            <select id="sort" onchange="applySort()">
+                <option value="sim" ${param.sort == 'sim' ? 'selected' : ''}>관련도순</option>
+                <option value="price_low" ${param.sort == 'price_low' ? 'selected' : ''}>가격 낮은 순</option>
+                <option value="price_high" ${param.sort == 'price_high' ? 'selected' : ''}>가격 높은 순</option>
+                <option value="date" ${param.sort == 'date' ? 'selected' : ''}>최신순</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- 사이드바: 카테고리 -->
+        <div class="category-sidebar col-md-3">
+            <h4>카테고리</h4>
+            <form id="categoryForm" action="${pageContext.request.contextPath}/results" method="get">
+                <ul class="category-list">
+                    <c:forEach var="category1" items="${categories.keySet()}">
+                        <li>
+                            <input type="radio" name="category1" value="${category1}" ${param.category1 == category1 ? 'checked' : ''} id="res_cat1_${category1}"/>
+                            <label for="res_cat1_${category1}">${category1}</label>
+                            <ul class="subcategory ${param.category1 == category1 ? 'visible' : ''}">
+                                <c:forEach var="category2" items="${categories[category1].keySet()}">
+                                    <li>
+                                        <input type="radio" name="category2" value="${category2}" ${param.category2 == category2 ? 'checked' : ''} id="res_cat2_${category2}"/>
+                                        <label for="res_cat2_${category2}">${category2}</label>
+                                        <ul class="subcategory ${param.category2 == category2 ? 'visible' : ''}">
+                                            <c:forEach var="category3" items="${categories[category1][category2]}">
+                                                <li>
+                                                    <input type="radio" name="category3" value="${category3}" ${param.category3 == category3 ? 'checked' : ''} id="res_cat3_${category3}"/>
+                                                    <label for="res_cat3_${category3}">${category3}</label>
+                                                </li>
+                                            </c:forEach>
+                                        </ul>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </li>
+                    </c:forEach>
+                </ul>
+                <button type="submit" class="btn btn-category-search mt-3">카테고리 검색</button>
+            </form>
+        </div>
+
+        <!-- 메인 콘텐츠: 상품 결과 -->
+        <div class="col-md-9">
+            <h4>검색 결과</h4>
+            <div class="row">
+                <c:choose>
+                    <c:when test="${not empty searchResult.products}">
+                        <c:forEach var="product" items="${searchResult.products}">
+                            <div class="col-md-3 mb-4 d-flex">
+                                <div class="card w-100">
+                                    <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${product.name}</h5>
+                                        <c:choose>
+                                            <c:when test="${product.brand != '알 수 없음'}">
+                                                <p class="brand-or-mall">${product.brand}</p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p class="brand-or-mall">${product.mallName}</p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <p class="card-text">${product.price}</p>
+                                        <a href="${product.link}" class="btn btn-primary mt-auto" target="_blank" rel="noopener noreferrer">구매하기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <p>검색 결과가 없습니다.</p>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
-            <!-- 검색 폼 고정 -->
-            <div class="search-form">
-                <form action="${pageContext.request.contextPath}/search" method="GET">
-                    <input type="hidden" name="page" value="${currentPage}" />
-                    <label for="query">검색어:</label>
-                    <input type="text" name="query" id="query" value="${query}" class="form-control d-inline w-auto" required />
-                    <label for="sort" class="ml-2">정렬 기준:</label>
-                    <select name="sort" id="sort" class="form-control d-inline sort-select ml-2" onchange="this.form.submit()">
-                        <option value="sim" ${sort == 'sim' ? 'selected' : ''}>관련도 높은 순</option>
-                        <option value="price_low" ${sort == 'price_low' ? 'selected' : ''}>가격 낮은 순</option>
-                        <option value="price_high" ${sort == 'price_high' ? 'selected' : ''}>가격 높은 순</option>
-                        <option value="date" ${sort == 'date' ? 'selected' : ''}>날짜 순</option>
-                    </select>
-                    <button type="submit" class="btn btn-primary ml-2">검색</button>
-                </form>
-            </div>
-
-            <!-- Pagination -->
-            <div class="pagination d-flex justify-content-center">
-                <c:if test="${currentPage > 1}">
-                    <a href="${pageContext.request.contextPath}/search?query=${query}&page=${currentPage - 1}&sort=${sort}">이전</a>
+            <div class="pagination">
+                <!-- 이전 버튼 -->
+                <c:if test="${startPage > 1}">
+                    <c:url var="prevPageUrl" value="results">
+                        <c:param name="query" value="${query}" />
+                        <c:param name="category1" value="${category1}" />
+                        <c:param name="category2" value="${category2}" />
+                        <c:param name="category3" value="${category3}" />
+                        <c:param name="sort" value="${sort}" />
+                        <c:param name="page" value="${startPage - 1}" />
+                    </c:url>
+                    <a href="${prevPageUrl}">이전</a>
                 </c:if>
 
-                <c:forEach begin="${startPage}" end="${endPage}" var="pageNum">
+                <!-- 페이지 번호 -->
+                <c:forEach var="pageNum" begin="${startPage}" end="${startPage + 9 > totalPages ? totalPages : startPage + 9}">
                     <c:choose>
                         <c:when test="${pageNum == currentPage}">
-                            <strong>${pageNum}</strong>
+                            <span class="active">${pageNum}</span>
                         </c:when>
                         <c:otherwise>
-                            <a href="${pageContext.request.contextPath}/search?query=${query}&page=${pageNum}&sort=${sort}">${pageNum}</a>
+                            <c:url var="pageUrl" value="results">
+                                <c:param name="query" value="${query}" />
+                                <c:param name="category1" value="${category1}" />
+                                <c:param name="category2" value="${category2}" />
+                                <c:param name="category3" value="${category3}" />
+                                <c:param name="sort" value="${sort}" />
+                                <c:param name="page" value="${pageNum}" />
+                            </c:url>
+                            <a href="${pageUrl}">${pageNum}</a>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
 
-                <c:if test="${currentPage < totalPages}">
-                    <a href="${pageContext.request.contextPath}/search?query=${query}&page=${currentPage + 1}&sort=${sort}">다음</a>
+                <!-- 다음 버튼 -->
+                <c:if test="${endPage < totalPages}">
+                    <c:url var="nextPageUrl" value="results">
+                        <c:param name="query" value="${query}" />
+                        <c:param name="category1" value="${category1}" />
+                        <c:param name="category2" value="${category2}" />
+                        <c:param name="category3" value="${category3}" />
+                        <c:param name="sort" value="${sort}" />
+                        <c:param name="page" value="${endPage + 1}" />
+                    </c:url>
+                    <a href="${nextPageUrl}">다음</a>
                 </c:if>
             </div>
-        </c:when>
-        <c:otherwise>
-            <p class="text-center text-muted">검색 결과가 없습니다.</p>
-        </c:otherwise>
-    </c:choose>
+        </div>
+    </div>
+</div>
+<div id="footerWrapper" class="mt-4">
+    <%@ include file="footer.jsp" %>
 </div>
 
-<%@ include file="footer.jsp"%>
+<script>
+function applySort() {
+    const sort = document.getElementById('sort').value;
+    const params = new URLSearchParams(window.location.search);
+    params.set('sort', sort);
+    params.set('page', '1');
+    window.location.search = params.toString();
+}
+
+document.querySelectorAll('.category-list input[type="radio"]').forEach(input => {
+    let lastClicked = null;
+    input.addEventListener('click', (e) => {
+        if (lastClicked === input) {
+            input.checked = false;
+            lastClicked = null;
+            const event = new Event('change', { bubbles: true });
+            input.dispatchEvent(event);
+        } else {
+            lastClicked = input;
+        }
+    });
+
+    input.addEventListener('change', () => {
+        const listItem = input.closest('li');
+        if (!listItem) return;
+  
+        const subcategory = listItem.querySelector('.subcategory');
+        if (subcategory && input.checked) {
+            subcategory.classList.add('visible');
+        } else if (subcategory && !input.checked) {
+            subcategory.classList.remove('visible');
+        }
+
+        document.querySelectorAll('.category-list .subcategory').forEach(sub => {
+            const parent = sub.closest('li');
+            if (sub !== subcategory && !parent.contains(input)) {
+                sub.classList.remove('visible');
+            }
+        });
+
+        const currentLevel = input.name.replace('category', '');
+        const nextLevel = parseInt(currentLevel) + 1;
+
+        document.querySelectorAll(`input[name="category${nextLevel}"]`).forEach(nextInput => {
+            const nextListItem = nextInput.closest('li');
+            const nextSubcategory = nextListItem ? nextListItem.querySelector('.subcategory') : null;
+            if (nextInput.checked && nextSubcategory) {
+                nextSubcategory.classList.add('visible');
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

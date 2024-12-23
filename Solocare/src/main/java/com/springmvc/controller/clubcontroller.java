@@ -34,8 +34,6 @@ public class clubcontroller {
 
     @Autowired
     private clubService clubService; 
-    @Autowired
-    private memberService memberservice;
     
     @GetMapping("/board")
     public String clubPage() {

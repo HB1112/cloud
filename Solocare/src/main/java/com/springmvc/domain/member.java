@@ -8,7 +8,6 @@ public class member {
 	private String email;
 	private int emailcheck;
 	private String phone;
-	private String gender;
 	private String birth;
 	private String address;
 
@@ -43,12 +42,7 @@ public class member {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+	
 	public String getBirth() {
 		return birth;
 	}

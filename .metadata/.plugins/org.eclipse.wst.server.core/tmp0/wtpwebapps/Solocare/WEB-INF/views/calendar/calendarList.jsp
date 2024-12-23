@@ -10,6 +10,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     
     <style>
+        /* 기존 스타일 유지 */
         :root {
             --primary-color: #3498db;
             --background-color: #f4f6f7;
@@ -172,9 +173,10 @@
             <button class="home-btn" onclick="location.href='/Solocare/home'">
                 <i class="fas fa-home"></i> 홈
             </button>
-            <button class="add-event-btn" onclick="location.href='calendar'">
-                <i class="fas fa-plus"></i> 일정 추가
-            </button>
+                <button class="add-event-btn" onclick="location.href='calendar'">
+                    일정 추가
+                </button>
+            </div>
         </div>
         <div id='calendar'></div>
     </div>
@@ -196,77 +198,72 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales/ko.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'ko',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                events: [
-                    <c:forEach var="calendar" items="${calendars}" varStatus="status">
-                    {
-                        title: '<c:out value="${calendar.title}" escapeXml="true"/>',
-                        start: '${calendar.start}',
-                        end: '${calendar.end}',
-                        id: '${calendar.id}',
-                        extendedProps: {
-                            description: '<c:out value="${calendar.description}" escapeXml="true"/>'
-                        }
-                    }${!status.last ? ',' : ''}
-                    </c:forEach>
-                ],
-                eventClick: function(info) {
-                    var eventId = info.event.id;
-                    var eventTitle = info.event.title.replace(/'/g, "\\'");
-                    var eventDescription = info.event.extendedProps.description ? info.event.extendedProps.description.replace(/'/g, "\\'") : '';
-                    var eventStart = info.event.start ? info.event.start.toLocaleString('ko-KR') : ''; 
-                    var eventEnd = info.event.end ? info.event.end.toLocaleString('ko-KR') : ''; 
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'ko',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: [
+                <c:forEach var="clubCalendar" items="${calendars}" varStatus="status">
+                {
+                    title: '<c:out value="${clubCalendar.title}" escapeXml="true"/>', // 제목
+                    start: '${clubCalendar.start}', // 시작 시간
+                    end: '${clubCalendar.end}', // 종료 시간
+                    id: '${clubCalendar.calendarNum}', // 캘린더 번호
+                    extendedProps: {
+                        description: '<c:out value="${clubCalendar.description}" escapeXml="true"/>', // 설명
+                        clubName: '<c:out value="${clubCalendar.clubname}" escapeXml="true"/>' // 클럽 이름
+                    }
+                }${!status.last ? ',' : ''}
+                </c:forEach>
+            ],
+            eventClick: function(info) {
+                var eventId = info.event.id; // 캘린더 번호
+                var eventTitle = info.event.title.replace(/'/g, "\\'");
+                var eventDescription = info.event.extendedProps.description ? info.event.extendedProps.description.replace(/'/g, "\\'") : '';
+                var eventStart = info.event.start ? info.event.start.toLocaleString('ko-KR') : ''; 
+                var eventEnd = info.event.end ? info.event.end.toLocaleString('ko-KR') : ''; 
+                var clubName = info.event.extendedProps.clubName; // 클럽 이름
 
-                    var detailsHtml = 
-                        '<h3>일정 상세 정보</h3>' +
-                        '<p><strong>제목:</strong> ' + eventTitle + '</p>' +
-                        '<p><strong>설명:</strong> ' + eventDescription + '</p>' +
-                        '<p><strong>시작:</strong> ' + eventStart + '</p>' +
-                        '<p><strong>종료:</strong> ' + eventEnd + '</p>';
-                    
-                    document.getElementById('eventDetails').innerHTML = detailsHtml;
+                var detailsHtml = 
+                    '<h3>일정 상세 정보</h3>' +
+                    '<p><strong>동호회:</strong> ' + clubName + '</p>' + // 클럽 이름 표시
+                    '<p><strong>제목:</strong> ' + eventTitle + '</p>' + // 제목 표시
+                    '<p><strong>내용:</strong> ' + eventDescription + '</p>' +
+                    '<p><strong>시작:</strong> ' + eventStart + '</p>' +
+                    '<p><strong>종료:</strong> ' + eventEnd + '</p>';
+                
+                document.getElementById('eventDetails').innerHTML = detailsHtml;
 
-                    document.getElementById('edit-btn').onclick = function() {
-                        window.location.href = 'edit/' + eventId;
-                    };
+                document.getElementById('edit-btn').onclick = function() {
+                    window.location.href = 'edit/' + eventId; // 수정 페이지로 이동
+                };
 
-                    document.getElementById('delete-btn').onclick = function() {
-                        if (confirm('정말 삭제하시겠습니까?')) {
-                            window.location.href = 'delete/' + eventId;
-                        }
-                    };
+                document.getElementById('delete-btn').onclick = function() {
+                    if (confirm('정말 삭제하시겠습니까?')) {
+                        window.location.href = 'delete/' + eventId; // 삭제 요청
+                    }
+                };
 
-                    document.getElementById('eventModal').style.display = 'flex';
-                }
-            });
-            calendar.render();
-
-            document.getElementById('closeModal').onclick = function() {
-                document.getElementById('eventModal').style.display = 'none';
-            };
-
-            window.onclick = function(event) {
-                if (event.target == document.getElementById('eventModal')) {
-                    document.getElementById('eventModal').style.display = 'none';
-                }
-            };
+                document.getElementById('eventModal').style.display = 'flex';
+            }
         });
-    </script>
+        calendar.render();
 
-    <c:if test="${not empty errorMessage}">
-        <script>
-            alert('${errorMessage}');
-        </script>
-    </c:if>
-</body>
-</html>
+        document.getElementById('closeModal').onclick = function() {
+            document.getElementById('eventModal').style.display = 'none';
+        };
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('eventModal')) {
+                document.getElementById('eventModal').style.display = 'none';
+            }
+        };
+    });
+</script>
