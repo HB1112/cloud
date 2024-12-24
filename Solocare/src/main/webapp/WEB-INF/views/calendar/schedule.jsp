@@ -36,6 +36,9 @@
     </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
 <form action="calendar" method="post">
     <div>
         <label for="userId">아이디:</label>

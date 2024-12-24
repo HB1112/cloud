@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>로그인</title>
     <style>
         body {
@@ -91,8 +92,30 @@
     </style>
 </head>
 <body>
+	
     <div class="form-container">
         <h1>로그인</h1>
+        <%
+			String error = (String)request.getAttribute("error");
+			System.out.println("로그인 에러 : "+error);
+			if (error != null) {
+				out.println("<div class='alert alert-danger'>");
+				out.println("아이디와 비밀번호를 확인해 주세요");
+				out.println("</div>");
+			}
+			
+		%>
+		<% 
+		    String emailCheckError = (String) request.getAttribute("emailCheckError");
+		    System.out.println("이메일 인증 에러 : " + emailCheckError);
+		    if (emailCheckError != null) {
+		%>
+		    <div class='alert alert-warning'>
+		        <%= emailCheckError %>
+		    </div>
+		<% 
+		    } 
+		%>
         <form action="login" method="post">
             <div class="form-group">
                 <label for="username">아이디</label>

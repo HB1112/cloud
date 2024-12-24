@@ -30,9 +30,9 @@ public class boardcontroller {
 	private boardService boardservice;
 	// Board Read by category
 	
-	@GetMapping("/tradeboard")
+	@GetMapping("/community")
 	public String gotrade() {
-		return "board/trade";
+		return "board/community";
 	}
 	// Read all
 	@GetMapping("/board")

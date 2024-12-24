@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+	
 	<form action="update" method="POST">
     <input type="hidden" name="oldTitle" value="${event.title}">
     

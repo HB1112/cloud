@@ -7,11 +7,6 @@
     <meta charset="UTF-8">
     <title>클럽 게시판</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
         body {
             font-family: 'Noto Sans', sans-serif;
@@ -38,7 +33,9 @@
 	<%
 	  int startNumber = (Integer) request.getAttribute("startNumber"); // 시작 번호
 	%>
-    <%@ include file="../menu.jsp"%>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
     <div class="container">
         <h1 class="mt-4">클럽 게시판</h1>
         

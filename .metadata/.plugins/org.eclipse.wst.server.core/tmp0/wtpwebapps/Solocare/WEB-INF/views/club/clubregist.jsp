@@ -7,6 +7,9 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
     <h1>동호회 등록</h1>
     <form name="newClub" action="regist" method="post">
         <div>

@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -49,6 +50,9 @@
     </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
 
 <h2>일정 수정</h2>
 

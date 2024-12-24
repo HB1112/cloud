@@ -81,6 +81,9 @@
 </script>
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
     <div class="form-container">
         <h2>게시글 작성</h2>
         <form name="newWrite" action="writeboard" method="post" onsubmit="return checkForm()">
@@ -88,6 +91,7 @@
                 <label>카테고리</label>
                 <select name="category" class="form-control">
                     <option value="tip" ${category == 'tip' ? 'selected' : ''}>생활팁/정보</option>
+                    <option value="free" ${category == 'free' ? 'selected' : ''}>자유</option>
                     <option value="sell" ${category == 'sell' ? 'selected' : ''}>판매</option>
                     <option value="buy" ${category == 'buy' ? 'selected' : ''}>구매</option>
                 </select>

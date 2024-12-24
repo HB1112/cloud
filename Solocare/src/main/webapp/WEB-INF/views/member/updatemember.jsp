@@ -1,10 +1,14 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="com.springmvc.domain.member" %>
 <html>
   <head>
     <title>정보 수정</title>
   </head>
   <body>
+  	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
   <div>
   	<h2>정보 수정</h2>
   </div>

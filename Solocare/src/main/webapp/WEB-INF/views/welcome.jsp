@@ -25,8 +25,8 @@
 											<li><a href="/Solocare/home">Home</a></li>
 											<li><a href="/Solocare/search">쇼핑</a></li>
 											<li><a href="/Solocare/club/board">동호회</a></li>
-											<li><a href="/Solocare/tradeboard">커뮤니티</a></li>
-											<li><a href="#">정책</a></li>
+											<li><a href="/Solocare/community">커뮤니티</a></li>
+											<li><a href="/Solocare/policy">정책</a></li>
 										</ul>
 									</div>
 								</li>

@@ -232,7 +232,8 @@
             <span>검색 결과</span>
         </div>
         <div class="top-bar-right">
-            <form id="searchForm" action="${pageContext.request.contextPath}/results" method="get" class="d-flex">
+            <!-- <form id="searchForm" action="${pageContext.request.contextPath}/results" method="get" class="d-flex"> -->
+            <form id="searchForm" action="<c:url value='/results' />" method="get" class="d-flex">
                 <div class="input-group">
                     <input type="text" id="searchQuery" name="query" value="${param.query}" class="form-control" placeholder="검색...">
                     <div class="input-group-append">
@@ -253,33 +254,70 @@
         <!-- 사이드바: 카테고리 -->
         <div class="category-sidebar col-md-3">
             <h4>카테고리</h4>
-            <form id="categoryForm" action="${pageContext.request.contextPath}/results" method="get">
-                <ul class="category-list">
-                    <c:forEach var="category1" items="${categories.keySet()}">
-                        <li>
-                            <input type="radio" name="category1" value="${category1}" ${param.category1 == category1 ? 'checked' : ''} id="res_cat1_${category1}"/>
-                            <label for="res_cat1_${category1}">${category1}</label>
-                            <ul class="subcategory ${param.category1 == category1 ? 'visible' : ''}">
-                                <c:forEach var="category2" items="${categories[category1].keySet()}">
-                                    <li>
-                                        <input type="radio" name="category2" value="${category2}" ${param.category2 == category2 ? 'checked' : ''} id="res_cat2_${category2}"/>
-                                        <label for="res_cat2_${category2}">${category2}</label>
-                                        <ul class="subcategory ${param.category2 == category2 ? 'visible' : ''}">
-                                            <c:forEach var="category3" items="${categories[category1][category2]}">
-                                                <li>
-                                                    <input type="radio" name="category3" value="${category3}" ${param.category3 == category3 ? 'checked' : ''} id="res_cat3_${category3}"/>
-                                                    <label for="res_cat3_${category3}">${category3}</label>
-                                                </li>
-                                            </c:forEach>
-                                        </ul>
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                        </li>
-                    </c:forEach>
-                </ul>
-                <button type="submit" class="btn btn-category-search mt-3">카테고리 검색</button>
-            </form>
+            <!-- <form id="categoryForm" action="${pageContext.request.contextPath}/results" method="get"> -->
+		<form id="categoryForm" action="<c:url value='/results' />" method="get">
+		    <ul class="category-list">
+		        <c:forEach var="category1" items="${categories.keySet()}">
+		            <li>
+		                <input type="radio" name="category1" value="${category1}" ${param.category1 == category1 ? 'checked' : ''} id="res_cat1_${category1}"/>
+		                <label for="res_cat1_${category1}">${category1}</label>
+		                <ul class="subcategory ${param.category1 == category1 ? 'visible' : ''}">
+		                    <c:forEach var="category2" items="${categories[category1].keySet()}">
+		                        <li>
+		                            <input type="radio" name="category2" value="${category2}" ${param.category2 == category2 ? 'checked' : ''} id="res_cat2_${category2}"/>
+		                            <label for="res_cat2_${category2}">${category2}</label>
+		                            <ul class="subcategory ${param.category2 == category2 ? 'visible' : ''}">
+		                                <c:forEach var="category3" items="${categories[category1][category2]}">
+		                                    <li>
+		                                        <input type="radio" name="category3" value="${category3}" ${param.category3 == category3 ? 'checked' : ''} id="res_cat3_${category3}"/>
+		                                        <label for="res_cat3_${category3}">${category3}</label>
+		                                    </li>
+		                                </c:forEach>
+		                            </ul>
+		                        </li>
+		                    </c:forEach>
+		                </ul>
+		            </li>
+		        </c:forEach>
+		    </ul>
+		    <button type="submit" class="btn btn-category-search mt-3">카테고리 검색</button>
+		</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const category1Inputs = document.querySelectorAll('input[name="category1"]');
+    const category2Inputs = document.querySelectorAll('input[name="category2"]');
+    const category3Inputs = document.querySelectorAll('input[name="category3"]');
+
+    category1Inputs.forEach(input => {
+        input.addEventListener('change', () => {
+            // category2 및 category3 초기화
+            category2Inputs.forEach(cat2 => {
+                if (cat2.checked) {
+                    cat2.checked = false;
+                }
+            });
+            category3Inputs.forEach(cat3 => {
+                if (cat3.checked) {
+                    cat3.checked = false;
+                }
+            });
+        });
+    });
+
+    category2Inputs.forEach(input => {
+        input.addEventListener('change', () => {
+            // category3 초기화
+            category3Inputs.forEach(cat3 => {
+                if (cat3.checked) {
+                    cat3.checked = false;
+                }
+            });
+        });
+    });
+});
+</script>
+            
         </div>
 
         <!-- 메인 콘텐츠: 상품 결과 -->
@@ -317,17 +355,17 @@
 
             <div class="pagination">
                 <!-- 이전 버튼 -->
-                <c:if test="${startPage > 1}">
-                    <c:url var="prevPageUrl" value="results">
-                        <c:param name="query" value="${query}" />
-                        <c:param name="category1" value="${category1}" />
-                        <c:param name="category2" value="${category2}" />
-                        <c:param name="category3" value="${category3}" />
-                        <c:param name="sort" value="${sort}" />
-                        <c:param name="page" value="${startPage - 1}" />
-                    </c:url>
-                    <a href="${prevPageUrl}">이전</a>
-                </c:if>
+				<c:if test="${startPage > 1}">
+				    <c:url var="prevPageUrl" value="/results">
+				        <c:param name="query" value="${query}" />
+				        <c:param name="category1" value="${category1}" />
+				        <c:param name="category2" value="${category2}" />
+				        <c:param name="category3" value="${category3}" />
+				        <c:param name="sort" value="${sort}" />
+				        <c:param name="page" value="${startPage - 1}" />
+				    </c:url>
+				    <a href="${prevPageUrl}">이전</a>
+				</c:if>
 
                 <!-- 페이지 번호 -->
                 <c:forEach var="pageNum" begin="${startPage}" end="${startPage + 9 > totalPages ? totalPages : startPage + 9}">
@@ -336,7 +374,7 @@
                             <span class="active">${pageNum}</span>
                         </c:when>
                         <c:otherwise>
-                            <c:url var="pageUrl" value="results">
+                            <c:url var="pageUrl" value="/results">
                                 <c:param name="query" value="${query}" />
                                 <c:param name="category1" value="${category1}" />
                                 <c:param name="category2" value="${category2}" />
@@ -351,7 +389,7 @@
 
                 <!-- 다음 버튼 -->
                 <c:if test="${endPage < totalPages}">
-                    <c:url var="nextPageUrl" value="results">
+                    <c:url var="nextPageUrl" value="/results">
                         <c:param name="query" value="${query}" />
                         <c:param name="category1" value="${category1}" />
                         <c:param name="category2" value="${category2}" />

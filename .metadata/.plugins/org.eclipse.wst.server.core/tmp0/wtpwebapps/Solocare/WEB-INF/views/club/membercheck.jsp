@@ -14,6 +14,9 @@
     </style>
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
     <div class="container mt-4">
         <h1>클럽 멤버 리스트</h1>
 

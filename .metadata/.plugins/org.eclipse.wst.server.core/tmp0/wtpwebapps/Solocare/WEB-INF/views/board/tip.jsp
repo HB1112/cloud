@@ -26,6 +26,7 @@
         font-family: Arial, sans-serif;
         margin: 20px;
         background-color: #f5f5f5;
+        margin-top: 80px;
     }
 
     h2 {
@@ -131,7 +132,9 @@
 </style>
 </head>
 <body>
-	<%@ include file="../menu.jsp"%>
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
     <div>
         <h2>팁 정보 공유 게시판</h2>
     </div>

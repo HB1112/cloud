@@ -134,6 +134,21 @@ public class clubcontroller {
         model.addAttribute("club", club); 
         return "club/clubDetail"; 
     }
+    // 하나씩 read
+    @GetMapping("/myclubdetail/{clubNum}")
+    public String myclubDetail(@PathVariable int clubNum, Model model) {
+        System.out.println("전달받은 클럽 번호: " + clubNum); 
+        club club = clubService.getClubByNum(clubNum); 
+        System.out.println("조회한 클럽: " + club); 
+        
+        if (club == null) {
+            System.out.println("클럽 정보가 null입니다. 클럽 번호: " + clubNum);
+            return "error"; 
+        }
+        
+        model.addAttribute("club", club); 
+        return "club/myclubDetail"; 
+    }
     
     
     // Club U
@@ -231,6 +246,17 @@ public class clubcontroller {
         clubService.minusmemberCount(clubNum);
 
         return "redirect:/club/membercheck?clubNum=" + clubNum;  // 승인 후 리다이렉트할 페이지
+    }
+    @PostMapping("/selfcancelMember")
+    public String selfcancelMember(@RequestParam("memberId") String memberId, 
+                                @RequestParam("clubNum") int clubNum) {
+        // 클럽 멤버 승인 처리
+        clubService.cancelMember(memberId, clubNum); // 승인을 위한 서비스 호출
+
+        // 승인된 멤버 수 증가
+        clubService.minusmemberCount(clubNum);
+
+        return "redirect:/club/board";  // 승인 후 리다이렉트할 페이지
     }
     
    

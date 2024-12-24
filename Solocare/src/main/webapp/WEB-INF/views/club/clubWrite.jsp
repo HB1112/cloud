@@ -7,6 +7,9 @@
 <title>글 작성</title>
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
 <div class="form-container">
     <h2>게시글 작성</h2>
     <form name="newWrite" action="writeclub" method="post" >

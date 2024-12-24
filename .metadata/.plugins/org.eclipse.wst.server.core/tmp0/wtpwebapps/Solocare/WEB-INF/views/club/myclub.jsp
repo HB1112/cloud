@@ -26,11 +26,14 @@
 </style>
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
 	<h1>My 클럽</h1>
     <p><a href="${pageContext.request.contextPath}/club/board">동호회 홈으로 이동</a></p>
     <div class="club-container">
         <c:forEach var="club" items="${clubs}">
-            <div class="club-box" onclick="location.href='detail/${club.clubNum}'"> 
+            <div class="club-box" onclick="location.href='myclubdetail/${club.clubNum}'"> 
                 <h3>${club.clubName}</h3>
                 <p>설명: ${club.clubDescription}</p>
                 <p>카테고리: ${club.clubCategory}</p>

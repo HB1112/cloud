@@ -7,12 +7,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <title>동호회 목록</title>
     <style>
         .club-container {
@@ -75,6 +70,9 @@
     </style>
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
     <h1>동호회 목록</h1>
     <p><a href="${pageContext.request.contextPath}/club/board">동호회 홈으로 이동</a></p>
     <div>
@@ -140,18 +138,40 @@
             </div>
         </c:forEach>
     </div>
-    <a href="regist" class="btn btn-primary">동호회 만들기</a>
+    <button onclick="checkLoginAndRedirect('${pageContext.request.contextPath}/club/regist')" class="btn btn-primary">동호회 만들기</button>
     
 </body>
 <script type="text/javascript">
-    document.getElementById("categoryToggle").addEventListener("click", function() {
-        var dropdown = document.getElementById("categoryDropdown");
-        dropdown.style.display = (dropdown.style.display === "none" || dropdown.style.display === "") ? "block" : "none"; // 드롭다운 보이기/숨기기
-    });
-
-    document.getElementById("regionToggle").addEventListener("click", function() {
-        var dropdown = document.getElementById("regionDropdown");
-        dropdown.style.display = (dropdown.style.display === "none" || dropdown.style.display === "") ? "block" : "none"; // 드롭다운 보이기/숨기기
-    });
+	function checkLoginAndRedirect(url) {
+	    <% if (request.getSession().getAttribute("mem") == null) { %>
+	        alert('로그인 해주세요.'); // 로그인하지 않은 경우 알림
+	        window.location.href = "${pageContext.request.contextPath}/login"; // 로그인 페이지로 리다이렉트
+	        return false; // 함수 종료
+	    <% } %>
+	    
+	    // 로그인한 경우 해당 URL로 이동
+	    window.location.href = url;
+	}
+	document.getElementById("categoryToggle").addEventListener("click", function() {
+	    var categoryDropdown = document.getElementById("categoryDropdown");
+	    var regionDropdown = document.getElementById("regionDropdown");
+	    
+	    // 카테고리 드롭다운 보이기/숨기기
+	    categoryDropdown.style.display = (categoryDropdown.style.display === "none" || categoryDropdown.style.display === "") ? "block" : "none"; 
+	    
+	    // 지역 드롭다운 숨기기
+	    regionDropdown.style.display = "none";
+	});
+	
+	document.getElementById("regionToggle").addEventListener("click", function() {
+	    var regionDropdown = document.getElementById("regionDropdown");
+	    var categoryDropdown = document.getElementById("categoryDropdown");
+	    
+	    // 지역 드롭다운 보이기/숨기기
+	    regionDropdown.style.display = (regionDropdown.style.display === "none" || regionDropdown.style.display === "") ? "block" : "none"; 
+	    
+	    // 카테고리 드롭다운 숨기기
+	    categoryDropdown.style.display = "none";
+	});
 </script>
 </html>

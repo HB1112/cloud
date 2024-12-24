@@ -124,6 +124,9 @@
 </style>
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
     <div>
         <h2>판매 게시판</h2>
     </div>

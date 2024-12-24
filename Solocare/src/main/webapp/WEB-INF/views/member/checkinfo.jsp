@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
 	<form action="checkpw" method="post">
 		<p> 비밀번호를 입력하시오
 		<input type="password" name="pw">

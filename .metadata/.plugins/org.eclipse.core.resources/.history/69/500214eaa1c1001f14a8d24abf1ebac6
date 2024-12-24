@@ -1,0 +1,31 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>동호회 커뮤니티</title>
+<style>
+    body {
+        margin-top: 80px; /* 내비게이션 바의 높이에 맞게 여백 추가 */
+    }
+</style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
+	
+	<div class="container mt-4"> <!-- 추가적인 여백을 위해 container 사용 -->
+		<h1>동호회</h1>
+		<nav>
+			<a href="list" class="btn btn-secondary">동호회 목록</a>
+			<form action="myclub" method="post" style="display: inline;">
+			    <input type="hidden" name="id" value="${mem.id}"> <!-- 세션에서 가져온 멤버 ID로 설정 -->
+			    <button type="submit" class="btn btn-warning">내 동호회</button>
+			</form>
+		</nav>
+	</div>
+</body>
+</html>

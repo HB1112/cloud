@@ -198,45 +198,76 @@
         <!-- 사이드바: 카테고리 필터 -->
         <div class="category-sidebar col-md-3">
             <h4>카테고리</h4>
-            <form id="categoryForm" action="${pageContext.request.contextPath}/results" method="get">
-                <ul class="category-list">
-                    <c:forEach var="category1" items="${categories.keySet()}">
-                        <li>
-                            <label>
-                                <input type="radio" name="category1" value="${category1}" ${param.category1 == category1 ? 'checked' : ''}>
-                                ${category1}
-                            </label>
-                            <ul class="subcategory ${param.category1 == category1 ? 'visible' : ''}">
-                                <c:forEach var="category2" items="${categories[category1].keySet()}">
-                                    <li>
-                                        <label>
-                                            <input type="radio" name="category2" value="${category2}" ${param.category2 == category2 ? 'checked' : ''}>
-                                            ${category2}
-                                        </label>
-                                        <ul class="subcategory ${param.category2 == category2 ? 'visible' : ''}">
-                                            <c:forEach var="category3" items="${categories[category1][category2]}">
-                                                <li>
-                                                    <label>
-                                                        <input type="radio" name="category3" value="${category3}" ${param.category3 == category3 ? 'checked' : ''}>
-                                                        ${category3}
-                                                    </label>
-                                                </li>
-                                            </c:forEach>
-                                        </ul>
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                        </li>
-                    </c:forEach>
-                </ul>
-                <button type="submit" class="btn btn-category-search mt-3">카테고리 검색</button>
-            </form>
+            <!-- <form id="categoryForm" action="${pageContext.request.contextPath}/results" method="get"> -->
+			<form id="categoryForm" action="<c:url value='/results' />" method="get">
+			    <ul class="category-list">
+			        <c:forEach var="category1" items="${categories.keySet()}">
+			            <li>
+			                <input type="radio" name="category1" value="${category1}" ${param.category1 == category1 ? 'checked' : ''} id="res_cat1_${category1}"/>
+			                <label for="res_cat1_${category1}">${category1}</label>
+			                <ul class="subcategory ${param.category1 == category1 ? 'visible' : ''}">
+			                    <c:forEach var="category2" items="${categories[category1].keySet()}">
+			                        <li>
+			                            <input type="radio" name="category2" value="${category2}" ${param.category2 == category2 ? 'checked' : ''} id="res_cat2_${category2}"/>
+			                            <label for="res_cat2_${category2}">${category2}</label>
+			                            <ul class="subcategory ${param.category2 == category2 ? 'visible' : ''}">
+			                                <c:forEach var="category3" items="${categories[category1][category2]}">
+			                                    <li>
+			                                        <input type="radio" name="category3" value="${category3}" ${param.category3 == category3 ? 'checked' : ''} id="res_cat3_${category3}"/>
+			                                        <label for="res_cat3_${category3}">${category3}</label>
+			                                    </li>
+			                                </c:forEach>
+			                            </ul>
+			                        </li>
+			                    </c:forEach>
+			                </ul>
+			            </li>
+			        </c:forEach>
+			    </ul>
+			    <button type="submit" class="btn btn-category-search mt-3">카테고리 검색</button>
+			</form>
+			
+			<script>
+			document.addEventListener('DOMContentLoaded', () => {
+			    const category1Inputs = document.querySelectorAll('input[name="category1"]');
+			    const category2Inputs = document.querySelectorAll('input[name="category2"]');
+			    const category3Inputs = document.querySelectorAll('input[name="category3"]');
+			
+			    category1Inputs.forEach(input => {
+			        input.addEventListener('change', () => {
+			            // category2 및 category3 초기화
+			            category2Inputs.forEach(cat2 => {
+			                if (cat2.checked) {
+			                    cat2.checked = false;
+			                }
+			            });
+			            category3Inputs.forEach(cat3 => {
+			                if (cat3.checked) {
+			                    cat3.checked = false;
+			                }
+			            });
+			        });
+			    });
+			
+			    category2Inputs.forEach(input => {
+			        input.addEventListener('change', () => {
+			            // category3 초기화
+			            category3Inputs.forEach(cat3 => {
+			                if (cat3.checked) {
+			                    cat3.checked = false;
+			                }
+			            });
+			        });
+			    });
+			});
+			</script>
         </div>
 
         <!-- 메인 콘텐츠: 검색창과 추천 상품 -->
         <div class="col-md-9">
             <div class="search-bar">
-                <form id="searchForm" action="${pageContext.request.contextPath}/results" method="get">
+                <!-- <form id="searchForm" action="${pageContext.request.contextPath}/results" method="get"> -->
+                <form id="searchForm" action="<c:url value='/results' />" method="get">
                     <div class="input-group">
                         <input type="text" id="searchQuery" name="query" value="${param.query}" class="form-control" placeholder="검색어를 입력하세요">
                         <div class="input-group-append">
@@ -300,6 +331,7 @@
 <div id="footerWrapper" class="mt-4">
     <%@ include file="footer.jsp" %>
 </div>
+
 
 <script>
 // 기존 JS 로직 그대로 유지 - 카테고리 토글 기능

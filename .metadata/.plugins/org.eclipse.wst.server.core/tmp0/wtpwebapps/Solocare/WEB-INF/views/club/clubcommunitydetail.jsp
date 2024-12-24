@@ -51,6 +51,9 @@
 	    member mem = (member) request.getSession().getAttribute("mem");
 	    boolean isMatch = (mem != null) && mem.getId().equals(clubboard.getMemberid()); // 작성자 아이디 비교
     %>
+   	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
     <h2 class="title">${clubboard.subject}</h2>
     <div class="meta-info">
         <span>작성자: ${clubboard.memberid}</span>

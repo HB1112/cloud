@@ -30,45 +30,74 @@ public class membercontroller {
 	MailSender sender;
 	
 	@GetMapping("/login")
-	public String gologin() {
+	public String gologin(HttpServletRequest request, Model model) {
 		System.out.println("membercontroller gologin()");
-		return "member/login";
+		// 전 페이지 URL 저장
+	    String referer = request.getHeader("Referer");
+	    if (referer != null) {
+	        request.getSession().setAttribute("previousUrl", referer);
+	    }
+
+	    return "member/login";
 	}
 
 	// member R 로그인 했을 때 one Read
-
 	@PostMapping("/login")
-	public String loginmember(@RequestParam("id") String id,@RequestParam("pw") String pw , HttpServletRequest request, HttpServletResponse response) {
+	public String loginmember(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpServletRequest request, HttpServletResponse response) {
+	    System.out.println(id);
+	    System.out.println(pw);
 
-		System.out.println(id);
-		System.out.println(pw);
+	    member mb = memberservice.loginmember(id, pw);
 
-		member mb = memberservice.loginmember(id, pw);
+	    if (mb != null) {
+	        System.out.println("해당 멤버 존재 : " + mb.getName());
 
-		if(mb != null) {
-			System.out.println("해당 멤버 존재 : "+mb.getName());
-			HttpSession session = request.getSession(true);
-			session.setAttribute("mem", mb);
-			return "member/loginsuccess";
-		}else {
+	        // 이메일 인증 체크
+	        if (mb.getEmailcheck() == 0) {
+	            // 이메일 인증이 필요함
+	            request.setAttribute("emailCheckError", "이메일 인증이 필요합니다.");
+	            return "member/login"; // 로그인 페이지로 돌아감
+	        }
 
-			String error = "1";
-			request.setAttribute("error", error);
-
-			return "member/login";
-		}
-
+	        HttpSession session = request.getSession(true);
+	        session.setAttribute("mem", mb);
+	        
+	        // 세션에서 전 페이지 URL 가져오기
+	        String previousUrl = (String) session.getAttribute("previousUrl");
+	        if (previousUrl != null) {
+	            // 전 페이지가 회원가입 페이지인지 확인
+	            if (previousUrl.contains("/addmember")) { // 회원가입 페이지 URL을 포함하는지 확인
+	                return "redirect:/home"; // 홈 페이지로 리다이렉트
+	            } else {
+	                return "redirect:" + previousUrl; // 전 페이지로 리다이렉트
+	            }
+	        } else {
+	            return "redirect:/defaultPage"; // 기본 페이지로 리다이렉트
+	        }
+	    } else {
+	        // 로그인 실패
+	        String error = "1";
+	        request.setAttribute("error", error);
+	        return "member/login"; // 로그인 페이지로 돌아감
+	    }
 	}
+
 
 	// member logut
 	@GetMapping("/logout")
 	public String logoutmember(HttpServletRequest request) {
-		HttpSession session = request.getSession(false); // 기존 세션 가져오기
-        if (session != null) {
-            session.invalidate(); // 세션 무효화
-        }
-		return "redirect:/home";
+	    HttpSession session = request.getSession(false); // 기존 세션 가져오기
+	    
+	    if (session != null) {
+	        session.invalidate(); // 세션 무효화
+	    }
+
+	    // 항상 홈 페이지로 리다이렉트
+	    return "redirect:/home";
 	}
+
+
+
 
 	// member C
 

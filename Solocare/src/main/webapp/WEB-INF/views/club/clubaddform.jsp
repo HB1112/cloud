@@ -36,31 +36,34 @@
     </style>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/club/clubcalendar/add/${clubNum}" method="post">
-    <div>
-    	<input type="hidden" name="clubnum" value="${clubNum}"/>
-    	<label for="clubname">동호회:</label>
-        <input type="text" id="clubname" name="clubname" value="${clubName}" readonly>
-    </div>
-    <div>
-        <label for="title">일정 제목:</label>
-        <input type="text" id="title" name="title" required>
-    </div>
-    <div>
-        <label for="description">내용:</label>
-        <input type="text" id="description" name="description" required>
-    </div>
-    <div>
-        <label for="start">시작:</label>
-        <input type="datetime-local" id="start" name="start" required>
-    </div>
-    <div>
-        <label for="end">종료:</label>
-        <input type="datetime-local" id="end" name="end" required>
-    </div>
-    <div>
-        <input type="submit" value="추가" />
-    </div>
-</form>
+	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
+	<form action="${pageContext.request.contextPath}/club/clubcalendar/add/${clubNum}" method="post">
+	    <div>
+	    	<input type="hidden" name="clubnum" value="${clubNum}"/>
+	    	<label for="clubname">동호회:</label>
+	        <input type="text" id="clubname" name="clubname" value="${clubName}" readonly>
+	    </div>
+	    <div>
+	        <label for="title">일정 제목:</label>
+	        <input type="text" id="title" name="title" required>
+	    </div>
+	    <div>
+	        <label for="description">내용:</label>
+	        <input type="text" id="description" name="description" required>
+	    </div>
+	    <div>
+	        <label for="start">시작:</label>
+	        <input type="datetime-local" id="start" name="start" required>
+	    </div>
+	    <div>
+	        <label for="end">종료:</label>
+	        <input type="datetime-local" id="end" name="end" required>
+	    </div>
+	    <div>
+	        <input type="submit" value="추가" />
+	    </div>
+	</form>
 </body>
 </html>

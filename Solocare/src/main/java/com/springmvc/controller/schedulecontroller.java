@@ -25,7 +25,7 @@ public class schedulecontroller {
     public String schedule(HttpSession session, Model model) {
         String userId = (String) session.getAttribute("loggedInUserId");
         model.addAttribute("userId", userId);
-        return "schedule";
+        return "/calendar/schedule";
     }
     
     // 일정 추가
@@ -43,7 +43,7 @@ public class schedulecontroller {
         String userId = (String) session.getAttribute("loggedInUserId");
         List<Calendar> calendars = CalendarService.getCalendarsByUserId(userId);
         model.addAttribute("calendars", calendars);
-        return "calendarList";
+        return "/calendar/calendarList";
     }
     
  // 일정 수정 페이지로 이동 (calendarNum을 사용)
@@ -51,7 +51,7 @@ public class schedulecontroller {
     public String editSchedule(@PathVariable int calendarNum, Model model) {
         Calendar calendar = CalendarService.getCalendarById(calendarNum); // calendarNum으로 일정 조회
         model.addAttribute("calendar", calendar);
-        return "calendarupdate"; // 수정 페이지로 이동
+        return "/calendar/calendarupdate"; // 수정 페이지로 이동
     }
 
     // 일정 수정 처리
