@@ -19,43 +19,8 @@
     </nav>
     <div class="container mt-4">
         <h1>클럽 멤버 리스트</h1>
-
-        <!-- 클럽 회원 테이블 -->
-        <div class="table-container">
-            <h3>${clubName} 회원</h3>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>멤버 아이디</th>
-                        <th>가입 날짜</th>
-                        <th>전화번호</th>
-                        <th>이메일</th>
-                        <th>액션</th> <!-- 액션 열 추가 -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="clubMember" items="${clubmembers}">
-                        <c:if test="${clubMember.memberjoin == 1}">
-                            <tr>
-                                <td>${clubMember.memberId}</td>
-                                <td>${clubMember.joinDate}</td>
-                                <td>${clubMember.memberphone}</td>
-                                <td>${clubMember.memberemail}</td>
-                                <td>
-                                    <form action="cancelMember" method="post" style="display:inline;">
-                                        <input type="hidden" name="memberId" value="${clubMember.memberId}">
-                                        <input type="hidden" name="clubNum" value="${clubMember.clubNum}">
-                                        <button type="submit" class="btn btn-danger btn-sm">탈퇴</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        </c:if>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- 승인 대기자 테이블 -->
+		
+		<!-- 승인 대기자 테이블 -->
         <div class="table-container">
             <h3>승인 대기자</h3>
             <table class="table table-bordered">
@@ -94,6 +59,42 @@
                 </tbody>
             </table>
         </div>
+        <!-- 클럽 회원 테이블 -->
+        <div class="table-container">
+            <h3>${clubName} 회원</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>멤버 아이디</th>
+                        <th>가입 날짜</th>
+                        <th>전화번호</th>
+                        <th>이메일</th>
+                        <th>액션</th> <!-- 액션 열 추가 -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="clubMember" items="${clubmembers}">
+                        <c:if test="${clubMember.memberjoin == 1}">
+                            <tr>
+                                <td>${clubMember.memberId}</td>
+                                <td>${clubMember.joinDate}</td>
+                                <td>${clubMember.memberphone}</td>
+                                <td>${clubMember.memberemail}</td>
+                                <td>
+                                    <form action="cancelMember" method="post" style="display:inline;">
+                                        <input type="hidden" name="memberId" value="${clubMember.memberId}">
+                                        <input type="hidden" name="clubNum" value="${clubMember.clubNum}">
+                                        <button type="submit" class="btn btn-danger btn-sm">탈퇴</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
+
+        
 
     </div>
 </body>

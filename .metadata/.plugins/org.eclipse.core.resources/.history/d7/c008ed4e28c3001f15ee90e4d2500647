@@ -1,0 +1,32 @@
+package com.springmvc.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+
+@Controller
+@RequestMapping("/youth")
+public class YouthPolicyController {
+
+    @GetMapping("/search")
+    @ResponseBody
+    public String searchYouthPolicy(@RequestParam("query") String query) {
+        String apiUrl = "https://www.youthcenter.go.kr/opi/youthPlcyList.do";
+        String apiKey = "9569a7f6c9d70e44cb6199da";
+        int display = 10;
+        int pageIndex = 1;
+
+        String fullUrl = String.format("%s?openApiVlak=%s&display=%d&pageIndex=%d&query=%s",
+                apiUrl, apiKey, display, pageIndex, query);
+
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            return restTemplate.getForObject(fullUrl, String.class);
+        } catch (Exception e) {
+            return "{\"error\": \"API 호출 중 문제가 발생했습니다.\"}";
+        }
+    }
+}
+

@@ -1,0 +1,32 @@
+package com.springmvc.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+
+@Controller
+public class policycontroller {
+
+    private final RestTemplate restTemplate;
+
+    public policycontroller(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    @GetMapping("/policy")
+    public String goPolicy() {
+        return "policy"; // policy.jsp 페이지로 이동
+    }
+
+    @GetMapping("/api/youth-policy")
+    public ResponseEntity<String> getYouthPolicy(@RequestParam String query, @RequestParam int page) {
+        // API 호출 URL
+        String apiUrl = "https://www.youthcenter.go.kr/opi/youthPlcyList.do?openApiVlak=9569a7f6c9d70e44cb6199da&display=10&pageIndex=" + page + "&query=" + query;
+
+        // API 호출
+        ResponseEntity<String> response = restTemplate.getForEntity(apiUrl, String.class);
+        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    }
+}

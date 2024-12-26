@@ -62,6 +62,14 @@
     .btn-primary {
         margin-right: 10px;
     }
+
+    #content {
+        height: 100px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+    }
 </style>
 <script type="text/javascript">
     function checkForm() {
@@ -73,15 +81,43 @@
             alert("제목을 입력하세요.");
             return false;
         }
-        if (!document.newWrite.content.value) {
+        if (!document.getElementById('content').innerHTML.trim()) {
             alert("내용을 입력하세요.");
             return false;
-        }		
+        }
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('content').addEventListener('paste', function (e) {
+            const items = e.clipboardData.items;
+
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+
+                if (item.type.indexOf('image') !== -1) {
+                    const file = item.getAsFile();
+                    const reader = new FileReader();
+
+                    reader.onload = function (event) {
+                        const img = document.createElement('img');
+                        img.src = event.target.result;
+                        img.style.maxWidth = '100%'; // 이미지 크기 조정
+                        img.style.height = 'auto';
+                        document.getElementById('content').appendChild(img);
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            // 기본 붙여넣기 동작 방지
+            e.preventDefault();
+        });
+    });
 </script>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
          <%@ include file="/WEB-INF/views/menu.jsp" %>
     </nav>
     <div class="form-container">
@@ -109,7 +145,8 @@
 
             <div class="mb-3">
                 <label>내용</label>
-                <textarea name="content" cols="50" rows="5" class="form-control" placeholder="내용을 입력하세요"></textarea>
+                <div id="content" contenteditable="true" class="form-control" placeholder="내용을 입력하세요"></div>
+                <input type="hidden" name="content" id="hiddenContent">
             </div>
 
             <div class="mb-3">
@@ -118,5 +155,12 @@
             </div>
         </form>
     </div>
+
+    <script>
+        // 폼 전송 시 내용 처리
+        document.forms['newWrite'].onsubmit = function() {
+            document.getElementById('hiddenContent').value = document.getElementById('content').innerHTML;
+        };
+    </script>
 </body>
 </html>

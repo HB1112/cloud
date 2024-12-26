@@ -1,0 +1,96 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>청년정책 데이터 AJAX 요청</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination button {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+         <%@ include file="/WEB-INF/views/menu.jsp" %>
+    </nav>
+    <h1>청년정책 데이터</h1>
+
+    <!-- 검색 입력 필드 추가 -->
+    <div>
+        <input type="text" id="searchQuery" placeholder="검색어를 입력하세요" />
+        <button id="searchButton">검색</button>
+    </div>
+
+    <div id="dataContainer"></div>
+    <div class="pagination" id="paginationContainer"></div> <!-- 페이징 버튼 컨테이너 -->
+    
+    <script>
+        var currentPage = 1; // 현재 페이지 변수 초기화
+        var totalPages = 0; // 전체 페이지 수
+        var searchQuery = ''; // 검색어 변수 초기화
+        var allData = []; // 전체 데이터 저장
+
+        $(document).ready(function() {
+            loadData(currentPage, searchQuery); // 페이지 로드 시 데이터 요청
+
+            // 검색 버튼 클릭 이벤트
+            $('#searchButton').click(function() {
+                searchQuery = $('#searchQuery').val(); // 입력된 검색어 저장
+                currentPage = 1; // 페이지를 1로 초기화
+                loadData(currentPage, searchQuery); // 검색어로 데이터 요청
+            });
+
+            function loadData(page, query) {
+                $.ajax({
+                    url: '/api/youth-policy?query=' + encodeURIComponent(query), // 백엔드 API 호출
+                    method: 'GET',
+                    dataType: 'json', // 응답 데이터 타입
+                    success: function(data) {
+                        if (data && data.data) {
+                            allData = data.data; // 전체 데이터를 저장
+                            totalPages = Math.ceil(allData.length / 10); // 전체 페이지 수 계산
+                            renderData(page); // 데이터 렌더링
+                            renderPagination(); // 페이지 번호 렌더링
+                        } else {
+                            $('#dataContainer').html('<p>데이터가 없습니다.</p>');
+                            $('#paginationContainer').empty(); // 페이지 버튼 초기화
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#dataContainer').html('<p>데이터를 불러오는 데 실패했습니다.</p>');
+                    }
+                });
+            }
+
+            function renderData(page) {
+                $('#dataContainer').empty(); // 데이터 컨테이너 초기화
+                var startIndex = (page - 1) * 10;
+                var endIndex = startIndex + 10;
+                var pageData = allData.slice(startIndex, endIndex); // 현재 페이지에 해당하는 데이터
+
+                $.each(pageData, function(index, item) {
+                    $('#dataContainer').append('<p>' + item.policyName + ': ' + item.policyDescription + '</p>'); // 데이터 출력
+                });
+            }
+
+            function renderPagination() {
+                $('#paginationContainer').empty(); // 기존 페이지 버튼 초기화
+                for (var i = 1; i <= totalPages; i++) {
+                    $('#paginationContainer').append('<button class="page-button" data-page="' + i + '">' + i + '</button>');
+                }
+
+                // 페이지 버튼 클릭 이벤트
+                $('.page-button').click(function() {
+                    currentPage = $(this).data('page'); // 클릭한 페이지 번호 저장
+                    renderData(currentPage); // 해당 페이지 데이터 렌더링
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -90,9 +90,7 @@
                 <a class="nav-link" href="/Solocare/community">커뮤니티</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="policyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    정책 지원 
-                </a>
+                <a class="nav-link" href="/Solocare/policy">정책</a>
             </li>
         </ul>
 

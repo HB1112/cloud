@@ -1,0 +1,24 @@
+package com.springmvc.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+
+@Controller
+public class policycontroller {
+
+    private final RestTemplate restTemplate;
+
+    // 생성자 주입을 통해 RestTemplate을 주입받음
+    public policycontroller(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    @GetMapping("/policy")
+    public String gopolicy() {
+        return "policy"; // policy.jsp 페이지로 이동
+    }
+
+}

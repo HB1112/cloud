@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.navbar {
+    background-color: #f8f9fa; /* 내비게이션 바 배경색 */
+}
+
+.search-container {
+    width: 60%; /* 전체 화면의 60% 너비 */
+    margin: 80px auto; /* 상단 여백 및 중앙 정렬 */
+    border: 1px solid #ccc; /* 테두리 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    padding: 20px; /* 내부 패딩 */
+    background-color: #f8f9fa; /* 배경색 */
+}
+
+h1 {
+    text-align: center; /* 제목 중앙 정렬 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+}
+
+.search-controls {
+    margin-bottom: 20px; /* 아래쪽 여백 */
+}
+
+.search-input-container {
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-bottom: 15px; /* 아래쪽 여백 */
+}
+
+.search-input-container i {
+    margin-right: 5px; /* 아이콘과 텍스트 간격 */
+}
+
+input[type="text"] {
+    padding: 8px;
+    margin-left: 10px; /* 텍스트와 입력 필드 간격 */
+    width: calc(100% - 20px); /* 너비 조정 */
+    border: 1px solid #ccc; /* 테두리 */
+    border-radius: 5px; /* 둥글게 */
+}
+
+.selection-container {
+    margin-bottom: 10px; /* 아래쪽 여백 */
+}
+
+.selection-container div {
+    margin-bottom: 10px; /* 아래쪽 여백 */
+}
+
+.selection-container span {
+    font-weight: bold; /* 강조 */
+    margin-right: 10px; /* 오른쪽 여백 */
+}
+
+.selection-button {
+    background-color: #e0e0e0;
+    border: 1px solid #007bff; /* 테두리 색상 */
+    padding: 8px 12px; /* 패딩 */
+    margin: 5px; /* 버튼 간격 */
+    border-radius: 5px; /* 버튼 둥글게 */
+    cursor: pointer; /* 커서 변경 */
+}
+
+.selection-button:hover {
+    background-color: #007bff; /* hover 시 색상 변경 */
+    color: white; /* 글자 색상 변경 */
+}
+
+#searchButton {
+    padding: 10px 15px; /* 패딩 */
+    border: none; /* 테두리 제거 */
+    background-color: #007bff; /* 배경색 */
+    color: white; /* 글자 색상 */
+    border-radius: 5px; /* 둥글게 */
+    cursor: pointer; /* 커서 변경 */
+    display: block; /* 블록 요소로 설정 */
+    width: 100%; /* 전체 너비 */
+}
+
+#searchButton:hover {
+    background-color: #0056b3; /* hover 시 색상 변경 */
+}
+
+#result {
+    margin-top: 20px; /* 위쪽 여백 */
+}
+
+.pagination-controls {
+    margin-top: 20px;
+    display: flex; /* 가로 정렬 */
+    justify-content: center; /* 중앙 정렬 */
+}
+
+.pagination-controls .page-button {
+    padding: 8px 12px; /* 패딩 */
+    margin: 0 5px; /* 버튼 간격 */
+    border: 1px solid #007bff; /* 버튼 테두리 */
+    background-color: #f0f0f0; /* 배경색 */
+    border-radius: 5px; /* 둥글게 */
+    cursor: pointer; /* 커서 변경 */
+}
+
+.pagination-controls .page-button:hover {
+    background-color: #007bff; /* hover 시 색상 변경 */
+    color: white; /* 글자 색상 변경 */
+}
