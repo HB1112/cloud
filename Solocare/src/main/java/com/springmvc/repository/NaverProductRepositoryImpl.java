@@ -317,23 +317,23 @@ public class NaverProductRepositoryImpl implements NaverProductRepository {
     public Map<String, Map<String, List<String>>> getAllCategories() {
         return Map.of(
         		"가구·인테리어", Map.of(
-        			    "거실가구", List.of("소파", "테이블", "TV장식장", "거실장", "러그", "리클라이너"),
-        			    "침실가구", List.of("침대", "서랍장", "테이블", "화장대"),
-        			    "수납가구", List.of("옷장", "책장", "신발장", "수납박스", "수납선반"),
-        			    "욕실용품", List.of("욕실장·선반", "샤워커튼", "욕실매트")
+        			    "거실가구", List.of(),
+        			    "침실가구", List.of(),
+        			    "수납가구", List.of(),
+        			    "욕실용품", List.of()
         			),
         			"식품", Map.of(
-        			    "냉동/간편조리식품", List.of("즉석국·즉석탕", "즉석밥", "냉동피자", "냉동만두", "스프·죽"),
-        			    "신선식품", List.of("과일·채소", "샐러드", "계란류", "정육·계육", "수산물·해산물"),
-        			    "밀키트", List.of("면·파스타", "찌개·국", "구이", "조림/찜", "샤브샤브", "볶음·덮밥", "스튜", "떡볶이"),
-        			    "식품", List.of("라면·면류", "과자·스낵", "통조림", "양념·소스", "커피·차", "생수·음료")
+        			    "냉동식품", List.of(),
+        			    "샐러드", List.of(),
+        			    "밀키트", List.of(),
+        			    "간편식품", List.of()
         			),
         			"생활", Map.of(
-        			    "생활용품", List.of("청소용품", "욕실용품", "세탁용품", "수납정리용품", "생활잡화"),
+        			    "생활용품", List.of(),
         			    "보안용품", List.of(),
-        			    "주방용품", List.of("식기류", "조리도구", "냄비·프라이팬", "보관용기·밀폐용기")
+        			    "주방용품", List.of()
         			),
-        			"스포츠/레저", Map.of(
+        			"스포츠·레저", Map.of(
         			    "홈 트레이닝", List.of(),
         			    "캠핑장비", List.of(),
         			    "등산장비", List.of()
@@ -341,9 +341,7 @@ public class NaverProductRepositoryImpl implements NaverProductRepository {
         );
     }
 
-    /**
-     * 정렬 옵션을 Naver API에서 요구하는 형식으로 변환합니다.
-     */
+
     private String convertSort(String sort) {
         switch (sort) {
             case "price_low":

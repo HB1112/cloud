@@ -7,9 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-         <%@ include file="/WEB-INF/views/menu.jsp" %>
-    </nav>
 	<h2>내 정보</h2>
 	<p>아이디: ${mem.id}</p>
     <p>비밀번호: ${mem.pw}</p>

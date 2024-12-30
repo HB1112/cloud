@@ -91,9 +91,7 @@
 </script>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-         <%@ include file="/WEB-INF/views/menu.jsp" %>
-    </nav>
+	<%@ include file="/WEB-INF/views/navbar.jsp" %>
     <div class="form-container">
         <h2>게시글 수정하기</h2>
         <form name="newWrite" action="updateboard" method="post" onsubmit="return checkForm()">
@@ -104,6 +102,7 @@
                 <label>카테고리</label>
                 <select name="category" class="form-control">
                     <option value="tip" <c:if test="${board.category == 'tip'}">selected</c:if>>생활팁/정보</option>
+                    <option value="free" <c:if test="${board.category == 'free'}">selected</c:if>>자유</option>
                     <option value="sell" <c:if test="${board.category == 'sell'}">selected</c:if>>판매</option>
                     <option value="buy" <c:if test="${board.category == 'buy'}">selected</c:if>>구매</option>
                 </select>

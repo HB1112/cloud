@@ -165,17 +165,22 @@
             background-color: var(--primary-color) !important;
             border: none !important;
         }
+        .club-name {
+		    font-weight: bold; /* 글씨를 굵게 */
+		    color: var(--primary-color); /* 주요 색상 사용 */
+		    font-size: 1.5rem; /* 글씨 크기 조정 */
+		    margin: 0; /* 기본 여백 제거 */
+		}
+        
     </style>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-         <%@ include file="/WEB-INF/views/menu.jsp" %>
-    </nav>
     <div class="container">
         <div class="header">
             <button class="home-btn" onclick="location.href='/Solocare/home'">
                 <i class="fas fa-home"></i> 홈
             </button>
+            <h2 class="club-name">${club.clubName}</h2>
             <button class="add-event-btn" onclick="location.href='${pageContext.request.contextPath}/club/clubcalendar/add/${clubNum}'">
    				<i class="fas fa-plus"></i> 일정 추가
    			</button>

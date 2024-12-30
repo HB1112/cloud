@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="totalCount"/>
+		<item key="selection" value="만들기"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="totalCount"/>
-			<item value="url"/>
-			<item value="청년"/>
-			<item value="start"/>
-			<item value="tip"/>
+			<item value="만들기"/>
+			<item value="add"/>
+			<item value="my"/>
+			<item value="memberjoin"/>
 			<item value="join"/>
-			<item value="framework"/>
-			<item value="frame"/>
-			<item value="gson"/>
-			<item value="jack"/>
-			<item value="faster"/>
-			<item value="clubName"/>
-			<item value="count"/>
-			<item value="boardlist"/>
-			<item value="incre"/>
+			<item value="board-table"/>
+			<item value="club-action"/>
+			<item value="club"/>
+			<item value="category"/>
+			<item value="검색"/>
+			<item value="nav"/>
+			<item value="back-link"/>
+			<item value="update"/>
+			<item value="cancel"/>
+			<item value="ㅊ뭋디"/>
 		</list>
 		<list key="replacehistory">
 			<item value="board"/>

@@ -40,8 +40,8 @@ public class ProductController {
         }
 
         // 추천 상품 가져오기
-        List<Product> interiorProducts = filterDuplicates(productService.getTopNProductsByCategory("가구/인테리어", 3));
-        List<Product> foodProducts = filterDuplicates(productService.getTopNProductsByCategory("식품", 3));
+        List<Product> interiorProducts = filterDuplicates(productService.getTopNProductsByCategory("가구/인테리어", 8));
+        List<Product> foodProducts = filterDuplicates(productService.getTopNProductsByCategory("식품", 8));
 
         model.addAttribute("interiorProducts", interiorProducts);
         model.addAttribute("foodProducts", foodProducts);
@@ -63,8 +63,8 @@ public class ProductController {
         @RequestParam(value = "category3", required = false) String category3,
         @RequestParam(value = "page", defaultValue = "1") int page,
         @RequestParam(value = "sort", defaultValue = "sim") String sort,
-        @RequestParam(value = "minPrice", required = false, defaultValue = "1000") int minPrice, // 추가
-        @RequestParam(value = "maxPrice", required = false, defaultValue = "2000000") int maxPrice, // 추가
+        @RequestParam(value = "minPrice", required = false, defaultValue = "1000") int minPrice, 
+        @RequestParam(value = "maxPrice", required = false, defaultValue = "2000000") int maxPrice, 
         Model model
     ) {
         // "null" 문자열을 실제 null로 변환

@@ -169,9 +169,7 @@
     </style>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-         <%@ include file="/WEB-INF/views/menu.jsp" %>
-    </nav>
+	<%@ include file="/WEB-INF/views/navbar.jsp" %>
     <div class="container">
         <div class="header">
             <button class="home-btn" onclick="location.href='/Solocare/home'">

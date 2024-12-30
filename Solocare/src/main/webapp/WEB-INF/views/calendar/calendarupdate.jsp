@@ -50,9 +50,7 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-         <%@ include file="/WEB-INF/views/menu.jsp" %>
-    </nav>
+	<%@ include file="/WEB-INF/views/navbar.jsp" %>	
 
 <h2>일정 수정</h2>
 

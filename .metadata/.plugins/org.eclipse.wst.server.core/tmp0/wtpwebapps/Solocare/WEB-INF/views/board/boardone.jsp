@@ -137,9 +137,7 @@
 </style>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-         <%@ include file="/WEB-INF/views/menu.jsp" %>
-    </nav>
+	<%@ include file="/WEB-INF/views/navbar.jsp" %>
     <div class="post-container">
         <% 
             board board = (board) request.getAttribute("board"); // Model에서 board 객체 가져오기

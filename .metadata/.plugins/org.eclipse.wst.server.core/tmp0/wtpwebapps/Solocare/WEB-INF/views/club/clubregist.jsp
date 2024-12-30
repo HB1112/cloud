@@ -6,44 +6,122 @@
     <title>동호회 등록</title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
+    <style>
+         body {
+            background-color: #f8f9fa;
+            font-family: 'Noto Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 20px; /* navbar와의 간격 추가 */
+        }
+
+        .form-container {
+            background: white;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px; /* 클래스 속성으로 변경 */
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px; /* 기본 높이 설정 */
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 15px;
+            }
+            button[type="submit"] {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-         <%@ include file="/WEB-INF/views/menu.jsp" %>
-    </nav>
-    <h1>동호회 등록</h1>
-    <form name="newClub" action="regist" method="post">
-        <div>
-            <label>회원 아이디:</label>
-            <input name="clubLeader" type="text" value="${mem.id}" readonly>
-        </div>
-        <div>
-            <label>동호회명:</label>
-            <input name="clubName" type="text" required>
-        </div>
-        <div>
-            <label>동호회 설명:</label>
-            <textarea name="clubDescription" required></textarea>
-        </div>
-        <div>
-            <label for="clubCategory">동호회 카테고리:</label>
-            <select name="clubCategory" id="clubCategory" required>
-                <option value="">선택하세요</option>
-                <option value="스포츠 및 e스포츠">스포츠 및 e스포츠</option>
-                <option value="자기개발">자기개발</option>
-                <option value="봉사 및 사회적 활동">봉사 및 사회적 활동</option>
-                <option value="문화 및 예술">문화 및 예술</option>
-                <option value="여행 및 탐험">여행 및 탐험</option>
-            </select>
-        </div>
-        <div>
-            <label>동호회 활동 지역:</label>
-            <select name="region" id="sido1"></select>
-			<select name="district" id="gugun1"></select>
-        </div>
-        <div>
-            <button type="submit">등록</button>
-        </div>
-    </form>
+	<%@ include file="/WEB-INF/views/navbar.jsp" %>
+    <h1 class="header">동호회 등록</h1>
+    <div class="form-container">
+        <form name="newClub" action="regist" method="post">
+            <div class="form-group">
+                <label>회원 아이디:</label>
+                <input name="clubLeader" type="text" value="${mem.id}" readonly>
+            </div>
+            <div class="form-group">
+                <label>동호회명:</label>
+                <input name="clubName" type="text" required>
+            </div>
+            <div class="form-group">
+                <label>동호회 설명:</label>
+                <textarea name="clubDescription" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="clubCategory">동호회 카테고리:</label>
+                <select name="clubCategory" id="clubCategory" required>
+                    <option value="">선택하세요</option>
+                    <option value="스포츠 및 e스포츠">스포츠 및 e스포츠</option>
+                    <option value="자기개발">자기개발</option>
+                    <option value="봉사 및 사회적 활동">봉사 및 사회적 활동</option>
+                    <option value="문화 및 예술">문화 및 예술</option>
+                    <option value="여행 및 탐험">여행 및 탐험</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>동호회 활동 지역:</label>
+                <select name="region" id="sido1"></select>
+                <select name="district" id="gugun1"></select>
+            </div>
+            <div class="form-group">
+                <button type="submit">등록</button>
+            </div>
+        </form>
+    </div>
 </body>
 <script type="text/javascript">
 $(function(){
@@ -65,7 +143,7 @@ $(function(){
     var area15 = ["거제시", "김해시", "밀양시", "사천시", "양산시", "진주시", "창원시 의창구", "창원시 성산구", "창원시 마산합포구", "창원시 마산회원구", "창원시 진해구", "통영시", "거창군", "고성군", "남해군", "산청군", "의령군", "창녕군", "하동군", "함안군", "함양군", "합천군"];
     var area16 = ["서귀포시", "제주시"];
 
-    // 시/도 선택 박스 초기화 (value를 지역 이름으로 설정)
+ // 시/도 선택 박스 초기화 (value를 지역 이름으로 설정)
     $("select[name=region]").append(area0.map(function(item) {
         return "<option value='" + item + "'>" + item + "</option>";
     }));

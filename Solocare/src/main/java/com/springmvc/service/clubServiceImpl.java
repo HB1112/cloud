@@ -1,6 +1,7 @@
 package com.springmvc.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,7 @@ public class clubServiceImpl implements clubService
 	}
 
 	@Override
-	public List<club> getAllmyClubs(String memberId) {
+	public Map<String, List<club>> getAllmyClubs(String memberId) {
 		return clubRepository.getAllmyClubs(memberId);
 	}
 

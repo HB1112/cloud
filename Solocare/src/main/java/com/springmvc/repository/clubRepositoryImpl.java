@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -108,7 +110,7 @@ public class clubRepositoryImpl implements clubRepository
 	// club update
 	@Override
 	public void updateClub(club club) {
-		String sql = "UPDATE club SET clubLeader = ?, clubName = ?, clubDescription = ?, clubCategory = ?, region = ?, district WHERE clubNum = ?";
+		String sql = "UPDATE club SET clubLeader = ?, clubName = ?, clubDescription = ?, clubCategory = ? WHERE clubNum = ?";
 		
 		try {
 			conn = DBConnection.getConnection();
@@ -117,9 +119,8 @@ public class clubRepositoryImpl implements clubRepository
 	        pstmt.setString(1, club.getClubLeader());
 	        pstmt.setString(2, club.getClubName());
 	        pstmt.setString(3, club.getClubDescription());
-	        pstmt.setString(5, club.getRegion());
-            pstmt.setString(6, club.getDistrict());
-	        pstmt.setInt(7, club.getClubNum());
+	        pstmt.setString(4, club.getClubCategory());
+	        pstmt.setInt(5, club.getClubNum());
 			
 	        pstmt.executeUpdate();
 	        
@@ -508,13 +509,14 @@ public class clubRepositoryImpl implements clubRepository
 
 	    return isMember;
 	}
-	// myClub
 	@Override
-	public List<club> getAllmyClubs(String memberId) {
+	public Map<String, List<club>> getAllmyClubs(String memberId) {
 	    System.out.println("getAllmyClubs");
-	    List<club> clubs = new ArrayList<>();
-	    String sqlSelectClubNum = "SELECT clubNum FROM clubmember WHERE memberId = ?";
-	    String sqlSelectClub = "SELECT * FROM club WHERE clubNum = ?";	    
+	    List<club> joinedClubs = new ArrayList<>();  // memberJoin이 1인 클럽
+	    List<club> notJoinedClubs = new ArrayList<>(); // memberJoin이 0인 클럽
+	    String sqlSelectClubNum = "SELECT clubNum, memberJoin FROM clubmember WHERE memberId = ?";
+	    String sqlSelectClub = "SELECT * FROM club WHERE clubNum = ?";    
+
 	    try {
 	        conn = DBConnection.getConnection();
 	        pstmt = conn.prepareStatement(sqlSelectClubNum);
@@ -523,36 +525,44 @@ public class clubRepositoryImpl implements clubRepository
 	        
 	        while (rs.next()) {
 	            int clubNum = rs.getInt("clubNum");
-	            System.out.println("getAllmyClubs");
+	            int memberJoin = rs.getInt("memberJoin"); // memberJoin 값 조회
+	            System.out.println("getAllmyClubs, clubNum: " + clubNum + ", memberJoin: " + memberJoin);
 	            
 	            // 클럽 정보 조회
 	            pstmt2 = conn.prepareStatement(sqlSelectClub);
 	            pstmt2.setInt(1, clubNum);
 	            rs2 = pstmt2.executeQuery();
 	            
-	            while(rs2.next()) {
-	                System.out.println("getAllmyClubs");
+	            if (rs2.next()) { // 클럽 정보가 존재하는 경우에만
 	                club club = new club();
 	                club.setClubLeader(rs2.getString("clubLeader"));
 	                club.setClubNum(rs2.getInt("clubNum"));
 	                club.setClubName(rs2.getString("clubName"));
 	                club.setClubDescription(rs2.getString("clubDescription"));
 	                club.setClubCategory(rs2.getString("clubCategory"));
-	                
-	                // rs2에서 region 값을 가져옵니다.
-	                club.setRegion(rs2.getString("region")); // 수정된 부분
+	                club.setRegion(rs2.getString("region")); 
 	                club.setDistrict(rs2.getString("district"));
 	                club.setCount(rs2.getInt("memberCount"));
-	                
-	                clubs.add(club); // 클럽 정보를 리스트에 추가
+
+	                // memberJoin에 따라 리스트에 추가
+	                if (memberJoin == 1) {
+	                    joinedClubs.add(club); // memberJoin이 1인 경우
+	                } else {
+	                    notJoinedClubs.add(club); // memberJoin이 0인 경우
+	                }
 	            }
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 
-	    return clubs;
+	    // 결과를 Map으로 반환
+	    Map<String, List<club>> result = new HashMap<>();
+	    result.put("joinedClubs", joinedClubs);
+	    result.put("notJoinedClubs", notJoinedClubs);
+	    return result;
 	}
+
 
 	// Club 멤버 조회
 	@Override

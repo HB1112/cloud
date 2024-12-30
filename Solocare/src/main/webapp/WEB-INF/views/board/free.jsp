@@ -21,206 +21,250 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <title>팁 정보 공유 게시판</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: #f5f5f5;
-        margin-top: 80px;
-    }
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans', sans-serif;
+        }
 
-    h2 {
-        text-align: center;
-        color: #333;
-    }
+        .content {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 40px;
+        }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
+        .board-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+        }
 
-    th, td {
-        padding: 12px;
-        text-align: center;
-        border: 1px solid #ddd;
-    }
+        .board-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
 
-    th {
-        background-color: #007bff;
-        color: white;
-    }
+        .board-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
 
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
+        .board-table th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            padding: 12px;
+            border-bottom: 2px solid #dee2e6;
+            text-align: center;
+        }
 
-    tr:hover {
-        background-color: #ddd;
-    }
+        .board-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            color: #495057;
+            text-align: center;
+        }
 
-    .pagination {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
+        .board-table tr:hover {
+            background-color: #f8f9fa;
+        }
 
-    .pagination a {
-        padding: 8px 16px;
-        margin: 0 4px;
-        border: 1px solid #007bff;
-        color: #007bff;
-        text-decoration: none;
-        border-radius: 4px;
-    }
+        .board-table a {
+            color: #495057;
+            text-decoration: none;
+        }
 
-    .pagination a.active {
-        background-color: #007bff;
-        color: white;
-    }
+        .board-table a:hover {
+            color: #007bff;
+        }
 
-    .pagination a:hover {
-        background-color: #ddd;
-    }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
 
-    .search-form {
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-    }
+        .pagination a {
+            padding: 6px 12px;
+            border: 1px solid #dee2e6;
+            color: #007bff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
 
-    .search-form input[type="text"] {
-        padding: 8px;
-        margin-right: 4px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+        .pagination a.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
 
-    .search-form button {
-        padding: 8px;
-        border: 1px solid #007bff;
-        background-color: #007bff;
-        color: white;
-        border-radius: 4px;
-        cursor: pointer;
-    }
+        .pagination a:hover:not(.active) {
+            background-color: #f8f9fa;
+        }
 
-    .search-form button:hover {
-        background-color: #0056b3;
-    }
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            gap: 10px;
+        }
 
-    .write-button-container {
-        text-align: right; /* 오른쪽 정렬 */
-        margin-top: 20px;
-    }
+        .search-form {
+            display: flex;
+            gap: 8px;
+        }
 
-    .write-button {
-        padding: 10px 15px;
-        background-color: #007bff;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-    }
+        .search-form select,
+        .search-form input {
+            padding: 6px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
 
-    .write-button:hover {
-        background-color: #0056b3;
-    }
-</style>
+        .search-form input {
+            width: 200px;
+        }
+
+        .write-button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .write-button {
+            padding: 6px 16px;
+            border-radius: 4px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+        }
+
+        .write-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .search-form {
+                flex-wrap: wrap;
+            }
+
+            .search-form input {
+                width: 100%;
+            }
+
+            .board-table th:nth-child(3),
+            .board-table th:nth-child(4),
+            .board-table td:nth-child(3),
+            .board-table td:nth-child(4) {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-         <%@ include file="/WEB-INF/views/menu.jsp" %>
-    </nav>
-    <div>
-        <h2>자유 게시판</h2>
-    </div>
-    
-    <div style="padding-top: 20px">
-        <table>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성일</th>
-                <th>조회</th>
-                <th>글쓴이</th>
-            </tr>
-            <c:forEach var="board" items="${boardlist}">
-                <tr>
-                    <td><%= startNumber-- %></td> <!-- 번호 -->
-                    <td><a href="detail?num=${board.num}">${board.subject}</a></td> <!-- 제목 -->
-                    <td>${board.regist_date.split(' ')[0]}</td> <!-- 작성일 -->
-                    <td>${board.hit}</td> <!-- 조회 -->
-                    <td>${board.id}</td> <!-- 글쓴이 -->
-                </tr>
-            </c:forEach>
-        </table>
-    </div>
-    
-    <!-- 페이지네이션 -->
-    <div class="pagination">
-       <c:if test="${currentPage > 1}">
-           <c:choose>
-               <c:when test="${not empty items and not empty text}">
-                   <a href="searchboard?category=free&page=${currentPage - 1}&items=${items}&text=${text}">이전</a>
-               </c:when>
-               <c:otherwise>
-                   <a href="board?category=free&page=${currentPage - 1}">이전</a>
-               </c:otherwise>
-           </c:choose>
-       </c:if>
-       
-       <c:forEach begin="1" end="${totalPages}" var="i">
-           <c:choose>
-               <c:when test="${i == currentPage}">
-                   <a class="active">${i}</a> <!-- 현재 페이지 강조 -->
-               </c:when>
-               <c:otherwise>
-                   <c:choose>
-                       <c:when test="${not empty items and not empty text}">
-                           <a href="searchboard?category=free&page=${i}&items=${items}&text=${text}">${i}</a>
-                       </c:when>
-                       <c:otherwise>
-                           <a href="board?category=free&page=${i}">${i}</a>
-                       </c:otherwise>
-                   </c:choose>
-               </c:otherwise>
-           </c:choose>
-       </c:forEach>
+        <%@ include file="/WEB-INF/views/navbar.jsp" %>
 
-       <c:if test="${currentPage < totalPages}">
-           <c:choose>
-               <c:when test="${not empty items and not empty text}">
-                   <a href="searchboard?category=free&page=${currentPage + 1}&items=${items}&text=${text}">다음</a>
-               </c:when>
-               <c:otherwise>
-                   <a href="board?category=free&page=${currentPage + 1}">다음</a>
-               </c:otherwise>
-           </c:choose>
-       </c:if>
-    </div>
-
-    <div class="write-button-container">
-        <a href="writeboard?category=free" onclick="return checkLogin();" class="write-button">게시글 작성</a>
-    </div>
-    
-    <div class="search-form">				
-        <form action="searchboard" method="get">
-            <input type="hidden" name="category" value="free">
-            <input type="hidden" name="page" value="1">
+    <div class="content">
+        <h2 class="board-title">자유 게시판</h2>
         
-            <select name="items">
-                <option value="subject">제목</option>
-                <option value="content">내용</option>
-            </select>
-            <input type="text" name="text" placeholder="검색어를 입력하세요" required>
-            <button type="submit">검색</button>
-        </form>
-    </div>
-    
+        <div class="board-card">
+            <div class="search-container">
+                <form action="searchboard" method="get" class="search-form">
+                    <input type="hidden" name="category" value="free">
+                    <input type="hidden" name="page" value="1">
+                    <select name="items" class="form-select">
+                        <option value="subject">제목</option>
+                        <option value="content">내용</option>
+                    </select>
+                    <input type="text" name="text" placeholder="검색어를 입력하세요" required>
+                    <button type="submit" class="btn btn-search">검색</button>
+                </form>
+                <a href="writeboard?category=free" onclick="return checkLogin();" class="write-button">게시글 작성</a>
+            </div>
+
+            <table class="board-table">
+                <thead>
+                    <tr>
+                        <th width="10%">번호</th>
+                        <th width="45%">제목</th>
+                        <th width="15%">작성일</th>
+                        <th width="10%">조회</th>
+                        <th width="20%">글쓴이</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="board" items="${boardlist}">
+                        <tr>
+                            <td><%= startNumber-- %></td>
+                            <td class="text-left"><a href="detail?num=${board.num}">${board.subject}</a></td>
+                            <td>${board.regist_date.split(' ')[0]}</td>
+                            <td>${board.hit}</td>
+                            <td>${board.id}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <c:if test="${currentPage > 1}">
+                    <c:choose>
+                        <c:when test="${not empty items and not empty text}">
+                            <a href="searchboard?category=free&page=${currentPage - 1}&items=${items}&text=${text}">이전</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="board?category=free&page=${currentPage - 1}">이전</a>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
+                
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <c:choose>
+                        <c:when test="${i == currentPage}">
+                            <a class="active">${i}</a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:choose>
+                                <c:when test="${not empty items and not empty text}">
+                                    <a href="searchboard?category=free&page=${i}&items=${items}&text=${text}">${i}</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="board?category=free&page=${i}">${i}</a>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <c:if test="${currentPage < totalPages}">
+                    <c:choose>
+                        <c:when test="${not empty items and not empty text}">
+                            <a href="searchboard?category=free&page=${currentPage + 1}&items=${items}&text=${text}">다음</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="board?category=free&page=${currentPage + 1}">다음</a>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
+            </div>
+        </div>
+    </div>  
 </body>
 <script>
 	function checkLogin() {

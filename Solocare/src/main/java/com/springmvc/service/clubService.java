@@ -1,6 +1,7 @@
 package com.springmvc.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.springmvc.domain.club;
 import com.springmvc.domain.clubMember;
@@ -17,7 +18,7 @@ public interface clubService
 	List<club> getAllClubs();
 	void addClubMember(clubMember clubmember);
 	void plusmemberCount(int clubNum);
-	List<club> getAllmyClubs(String memberId);
+	Map<String, List<club>> getAllmyClubs(String memberId);
 	List<clubMember> getAllClubMember(int clubNum);
 	List<club> getClubsByCategory(String category);
 	List<club> searchClubs(String searchType, String query);

@@ -81,16 +81,46 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="/Solocare/search">쇼핑</a>
-            </li>
-             <li class="nav-item">
-                <a class="nav-link" href="/Solocare/club/board">동호회</a>
+                <a class="nav-link" href="search">쇼핑</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link" href="/Solocare/community">커뮤니티</a>
+                <a class="nav-link dropdown-toggle" href="#" id="homeCareDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    커뮤니티 
+                </a>
+                <div class="dropdown-menu" aria-labelledby="homeCareDropdown">
+                    <a class="dropdown-item" href="board?category=tip&page=1">정보 공유 (집 꾸미기, 생활 팁)</a>
+                    <a class="dropdown-item" href="tradeboard">중고거래</a>
+                    <a class="dropdown-item" href="/Solocare/club/board">동호회</a>
+                </div>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link" href="/Solocare/policy">정책</a>
+                <a class="nav-link dropdown-toggle" href="#" id="safetyHealthDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    건강 케어 
+                </a>
+                <div class="dropdown-menu" aria-labelledby="safetyHealthDropdown">
+                    <a class="dropdown-item" href="#">간단한 홈트레이닝 영상 제공</a>
+                    <a class="dropdown-item" href="#">건강 데이터 통합 관리</a>
+                    <a class="dropdown-item" href="#">집 주변 약국 운영시간, 야간운영? 정보</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="policyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    정책 지원 
+                </a>
+                <div class="dropdown-menu" aria-labelledby="policyDropdown">
+                    <a class="dropdown-item" href="#">사회성 증진 프로그램</a>
+                    <a class="dropdown-item" href="#">지원 혜택</a>
+                    <a class="dropdown-item" href="#">응급 대처 가이드</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="serviceDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    편의 서비스 
+                </a>
+                <div class="dropdown-menu" aria-labelledby="serviceDropdown">
+                    <a class="dropdown-item" href="#">정기 구독 식품, 청소, 심부름</a>
+                    <a class="dropdown-item" href="#">안심 귀가 루트 추천</a>
+                </div>
             </li>
         </ul>
 
@@ -99,9 +129,9 @@
         %>
             <div class="user-links">
                 <p>${mem.name}님 환영합니다</p>
-                <a href="/Solocare/infocheck" class="nav-link">내 정보</a>
-                <a href="/Solocare/logout" class="nav-link">로그아웃</a>
-                <a href="/Solocare/list" class="nav-link">일정관리</a>
+                <a href="infocheck" class="nav-link">내 정보</a>
+                <a href="logout" class="nav-link">로그아웃</a>
+                <a href="list" class="nav-link">일정관리</a>
             </div>
         <%
             } else {

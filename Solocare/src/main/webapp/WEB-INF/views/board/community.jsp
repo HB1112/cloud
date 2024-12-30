@@ -33,9 +33,7 @@
     </style>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-         <%@ include file="/WEB-INF/views/menu.jsp" %>
-    </nav>
+	<%@ include file="/WEB-INF/views/navbar.jsp" %>
     <div class="container">
         <h1>Solocare 커뮤니티</h1>
         <a class="button" href="board?category=tip">정보 공유</a>

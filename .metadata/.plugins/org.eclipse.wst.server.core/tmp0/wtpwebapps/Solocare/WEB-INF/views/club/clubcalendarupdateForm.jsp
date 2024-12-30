@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	
+	<%@ include file="/WEB-INF/views/navbar.jsp" %>
 	<form action="update" method="POST">
     <input type="hidden" name="oldTitle" value="${event.title}">
     

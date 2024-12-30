@@ -6,6 +6,9 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="D:\cloud\tt"/>
+			<item value="D:\cloud"/>
+			<item value="D:\cloud\mainSolocare"/>
 			<item value="C:\Users\User\Desktop\Solocarecss.zip"/>
 			<item value="C:\Users\User\Desktop\Solocare css\Solocare css"/>
 			<item value="C:\Users\User\Desktop\Solocare css"/>

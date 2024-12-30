@@ -28,9 +28,7 @@
     }
 </script>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top">
-         <%@ include file="/WEB-INF/views/menu.jsp" %>
-    </nav>
+	<%@ include file="/WEB-INF/views/navbar.jsp" %>
 	<div class="form-container">
         <h2>게시글 수정하기</h2>
         <form name="newWrite" action="updateclubboard" method="post" onsubmit="return checkForm()">

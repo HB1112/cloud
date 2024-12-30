@@ -5,65 +5,215 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>클럽 게시판</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>클럽 게시판</title>
     <style>
-        body {
-            font-family: 'Noto Sans', sans-serif;
-            margin-top: 80px;
+    body {
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+        font-family: 'Noto Sans', sans-serif;
+    }
+
+    .content {
+        max-width: 1400px;
+        margin: 30px auto;
+        padding: 0 40px;
+    }
+
+    .board-title {
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 25px;
+    }
+
+    .board-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .board-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .board-table th {
+        background-color: #f8f9fa;
+        color: #495057;
+        font-weight: 600;
+        padding: 12px;
+        border-bottom: 2px solid #dee2e6;
+        text-align: center;
+    }
+
+    .board-table td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+        color: #495057;
+        text-align: center;
+    }
+
+    .board-table tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .board-table a {
+        color: #495057;
+        text-decoration: none;
+    }
+
+    .board-table a:hover {
+        color: #007bff;
+    }
+
+    .search-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px 0;
+        gap: 10px;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 8px;
+    }
+
+    .search-form select,
+    .search-form input {
+        padding: 6px 12px;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    .search-form input {
+        width: 200px;
+    }
+
+    .btn {
+        padding: 6px 16px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .btn-search {
+        background-color: #007bff;
+        color: white;
+        border: none;
+    }
+
+    .btn-write {
+        background-color: #28a745;
+        color: white;
+        text-decoration: none;
+        border: none;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        padding: 6px 12px;
+        border: 1px solid #dee2e6;
+        color: #007bff;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    .pagination a.active {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .pagination a:hover:not(.active) {
+        background-color: #f8f9fa;
+    }
+
+    @media (max-width: 768px) {
+        .search-container {
+            flex-direction: column-reverse;
+            align-items: stretch;
         }
-        h1 {
-            color: #333;
+
+        .search-form {
+            flex-wrap: wrap;
         }
-        table {
+
+        .search-form input {
             width: 100%;
-            border-collapse: collapse;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+
+        .board-table th:nth-child(3),
+        .board-table th:nth-child(4),
+        .board-table td:nth-child(3),
+        .board-table td:nth-child(4) {
+            display: none;
         }
-        th {
-            background-color: #f2f2f2;
-        } 
-    </style>
+    }
+</style>
+
 </head>
 <body>
 	<%
 	  int startNumber = (Integer) request.getAttribute("startNumber"); // 시작 번호
 	%>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-         <%@ include file="/WEB-INF/views/menu.jsp" %>
-    </nav>
-    <div class="container">
-        <h1 class="mt-4">클럽 게시판</h1>
+    <%@ include file="/WEB-INF/views/navbar.jsp" %>
+    <div class="content">
+        <h2 class="board-title">클럽 게시판</h2>
         
-        <!-- 게시글 작성 버튼 추가 -->
-        <div class="mb-3">
-            <a href="writeclub?clubNum=${clubNum}" class="btn btn-primary">게시글 작성</a>
-        </div>
+        <div class="board-card">
+            <div class="search-container">
+                <form action="searchclubboard" method="get" class="search-form">
+                    <input type="hidden" name="clubNum" value="${clubNum}">
+                    <input type="hidden" name="page" value="1">
+                    <select name="items" class="form-select">
+                        <option value="subject">제목</option>
+                        <option value="content">내용</option>
+                    </select>
+                    <input type="text" name="text" placeholder="검색어를 입력하세요" required>
+                    <button type="submit" class="btn btn-search">검색</button>
+                </form>
+                <a href="writeclub?clubNum=${clubNum}" class="btn btn-write">게시글 작성</a>
+            </div>
         
-        <h2>게시글 목록</h2>
-        <table class="table table-bordered">
+        <table class="board-table">
             <thead>
                 <tr>
-                    <th>번호</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>등록일</th>
-                    <th>조회 수</th>
+                    <th width="10%">번호</th>
+                    <th width="45%">제목</th>
+                    <th width="15%">작성일</th>
+                    <th width="10%">조회</th>
+                    <th width="20%">글쓴이</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- 게시글 리스트를 출력 -->
                 <c:forEach var="board" items="${clubboards}">
                     <tr>
                         <td><%= startNumber-- %></td> <!-- 번호 -->
                         <td><a href="detailboard?boardnum=${board.boardnum}">${board.subject}</a></td>
-                        <td>${board.memberid}</td>
                         <td>${board.regist_date}</td>
                         <td>${board.hit}</td>
+                        <td>${board.memberid}</td>
                     </tr>
                 </c:forEach>
                 <c:if test="${empty clubboards}">
@@ -106,32 +256,17 @@
 		   </c:forEach>
 		
 		   <c:if test="${currentPage < totalPages}">
-		       <c:choose>
-		           <c:when test="${not empty items and not empty text}">
-		               <a href="searchclubboard?clubNum=${clubNum}&page=${currentPage + 1}&items=${items}&text=${text}" class="btn btn-secondary">다음</a>
-		           </c:when>
-		           <c:otherwise>
-		               <a href="community?clubNum=${clubNum}&page=${currentPage + 1}" class="btn btn-secondary">다음</a>
-		           </c:otherwise>
-		       </c:choose>
-		   </c:if>
-		</div>
-        <!-- 검색 -->
-        <div class="search-form">				
-        <form action="searchclubboard" method="get">
-            <input type="hidden" name="clubNum" value="${clubNum}">
-            <input type="hidden" name="page" value="1">
-        
-            <select name="items">
-                <option value="subject">제목</option>
-                <option value="content">내용</option>
-            </select>
-            <input type="text" name="text" placeholder="검색어를 입력하세요" required>
-            <button type="submit">검색</button>
-        </form>
-    </div>
-        
-        
-    </div>
+			    <c:choose>
+			        <c:when test="${not empty items and not empty text}">
+			            <a href="searchclubboard?clubNum=${clubNum}&page=${currentPage + 1}&items=${items}&text=${text}" class="btn btn-secondary">다음</a>
+			        </c:when>
+			        <c:otherwise>
+			            <a href="community?clubNum=${clubNum}&page=${currentPage + 1}" class="btn btn-secondary">다음</a>
+			        </c:otherwise>
+			    </c:choose>
+			</c:if>
+			</div>
+	</div>
+   </div>
 </body>
 </html>

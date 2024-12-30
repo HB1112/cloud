@@ -35,8 +35,10 @@ public class clubschedulecontroller
 	public String getCalendar(@PathVariable int clubNum, Model model) {
 		System.out.println("clubcalendar에 도착");
 	    List<clubcalendar> events = clubcalendarservice.getEventsByClubNum(clubNum);
+	    club club = clubService.getClubByNum(clubNum);
 	    System.out.println(clubNum);
 	    model.addAttribute("events", events);
+	    model.addAttribute("club", club);
 	    model.addAttribute("clubNum", clubNum);
 	    return "club/clubcalendarList";
     }
@@ -51,7 +53,7 @@ public class clubschedulecontroller
         model.addAttribute("clubName", club.getClubName()); // 동호회 이름 모델에 추가
         model.addAttribute("clubNum", clubNum); // 동호회 번호 모델에 추가
 	   
-		return "club/clubaddform";
+		return "club/clubcalandaraddform";
 	}
 	  
 	// 동호회 일정 추가 처리

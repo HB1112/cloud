@@ -36,7 +36,7 @@
 
 				<!-- Banner -->
 					<section id="banner">
-						<img src="/css/images/room2.jpg" alt="">
+						
 						<div class="inner">
 							<h2>solocare</h2>
 							<p>1인 가구를 위한 맞춤형 솔루션<br />

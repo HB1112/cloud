@@ -111,13 +111,20 @@ public class clubcontroller {
 
 
     // 내 클럽
-    @PostMapping("/myclub")
+    @GetMapping("/myclub")
     public String myClublists(@RequestParam("id") String memberId, Model model) {
         System.out.println("동호회 관리 요청, 멤버 ID: " + memberId);
-        List<club> clubs = clubService.getAllmyClubs(memberId);
-        model.addAttribute("clubs", clubs);
+        
+        // 클럽 정보를 가져옵니다.
+        Map<String, List<club>> clubs = clubService.getAllmyClubs(memberId);
+        
+        // 모델에 두 개의 리스트 추가
+        model.addAttribute("joinedClubs", clubs.get("joinedClubs"));
+        model.addAttribute("notjoinedClubs", clubs.get("notJoinedClubs"));
+        
         return "club/myclub"; // 클럽 리스트 페이지로 이동
     }
+
 
     // 하나씩 read
     @GetMapping("/detail/{clubNum}")
@@ -165,13 +172,12 @@ public class clubcontroller {
     @PostMapping("/update/submit")
     public String updateClub(@ModelAttribute club club) {
         clubService.updateClub(club); // 클럽 정보 업데이트
-        return "redirect:/club/detail/" + club.getClubNum(); // 업데이트 후 상세 페이지로 리다이렉트
+        return "redirect:/club/myclubdetail/" + club.getClubNum(); // 업데이트 후 상세 페이지로 리다이렉트
     }
-    // Club D
     @PostMapping("/delete")
-    public String deleteClub(@RequestParam int clubNum) {
+    public String deleteClub(@RequestParam int clubNum, @RequestParam String memberId) {
         clubService.deleteClub(clubNum);
-        return "redirect:/club/list";
+        return "redirect:/club/myclub?id=" + memberId; // memberId를 URL에 포함
     }
     // Club member join
     @GetMapping("join")
@@ -246,17 +252,6 @@ public class clubcontroller {
         clubService.minusmemberCount(clubNum);
 
         return "redirect:/club/membercheck?clubNum=" + clubNum;  // 승인 후 리다이렉트할 페이지
-    }
-    @PostMapping("/selfcancelMember")
-    public String selfcancelMember(@RequestParam("memberId") String memberId, 
-                                @RequestParam("clubNum") int clubNum) {
-        // 클럽 멤버 승인 처리
-        clubService.cancelMember(memberId, clubNum); // 승인을 위한 서비스 호출
-
-        // 승인된 멤버 수 증가
-        clubService.minusmemberCount(clubNum);
-
-        return "redirect:/club/board";  // 승인 후 리다이렉트할 페이지
     }
     
    

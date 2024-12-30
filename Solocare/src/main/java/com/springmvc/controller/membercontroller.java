@@ -40,8 +40,6 @@ public class membercontroller {
 
 	    return "member/login";
 	}
-
-	// member R 로그인 했을 때 one Read
 	@PostMapping("/login")
 	public String loginmember(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpServletRequest request, HttpServletResponse response) {
 	    System.out.println(id);
@@ -64,6 +62,12 @@ public class membercontroller {
 	        
 	        // 세션에서 전 페이지 URL 가져오기
 	        String previousUrl = (String) session.getAttribute("previousUrl");
+	        
+	        // 웰컴 페이지에서 로그인한 경우
+	        if ("http://localhost:8080/Solocare/".equals(previousUrl)) {
+	            return "redirect:/home"; // 홈 페이지로 리다이렉트
+	        }
+	        
 	        if (previousUrl != null) {
 	            // 전 페이지가 회원가입 페이지인지 확인
 	            if (previousUrl.contains("/addmember")) { // 회원가입 페이지 URL을 포함하는지 확인
@@ -81,6 +85,7 @@ public class membercontroller {
 	        return "member/login"; // 로그인 페이지로 돌아감
 	    }
 	}
+
 
 
 	// member logut
